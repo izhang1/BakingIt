@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import nanodegree.izhang.bakingit.Model.recipe;
+
 /**
  * Created by ivanzhang on 9/9/17.
  * utilities
@@ -30,12 +32,12 @@ class JsonUtil {
      * @return
      * @throws JSONException
      */
-//    public static List<Movie> getMovieListFromJson(String movieJsonStr)
-//            throws JSONException {
-//
-//        /* Results list */
-//        final String MOVIEDB_RESULT = "results";
-//
+    public static List<recipe> getMovieListFromJson(String movieJsonStr)
+            throws JSONException {
+
+        /* Results list */
+        final String MOVIEDB_RESULT = "results";
+
 //        /* All attributes of the movie and their information */
 //        final String MOVIE_TITLE = "title";
 //        final String MOVIE_RELEASE = "release_date";
@@ -45,7 +47,7 @@ class JsonUtil {
 //        final String MOVIE_ID = "id";
 //
 //        /* String array to hold each day's weather String */
-//        ArrayList<Movie> movieList = new ArrayList<>();
+//        ArrayList<recipe> movieList = new ArrayList<>();
 //
 //        JSONObject movieJson = new JSONObject(movieJsonStr);
 //
@@ -63,10 +65,10 @@ class JsonUtil {
 //                    tempObj.getString(MOVIE_ID));
 //            movieList.add(movie);
 //        }
-//
-//        return movieList;
-//    }
-//
+
+        return new ArrayList<>();
+    }
+
 
 
 }

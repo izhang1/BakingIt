@@ -33,10 +33,9 @@ public final class NetworkUtils {
     /**
      * Builds the URL based on the passed in sort the user wants.
      *
-     * @param passedCategory The sort that will be queried for.
      * @return The URL to use to query the service.
      */
-    public static URL buildUrl(int passedCategory) {
+    public static URL buildUrl() {
 
         Uri builtUri;
 

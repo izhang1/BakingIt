@@ -24,6 +24,14 @@ public class recipe {
         this.image = image;
     }
 
+    @Override
+    public String toString() {
+        return "Recipe: " + name + '\n' +
+                "ID: " + id + '\n' +
+                "Servings: " + servings + '\n' +
+                "Images: " + image + '\n';
+    }
+
     public String getId() {
 
         return id;
