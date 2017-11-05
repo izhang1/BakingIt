@@ -11,9 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import nanodegree.izhang.bakingit.Model.recipe;
+import nanodegree.izhang.bakingit.Model.Ingredient;
+import nanodegree.izhang.bakingit.Model.Recipe;
+import nanodegree.izhang.bakingit.Model.Step;
 
 /**
  * Created by ivanzhang on 9/9/17.
@@ -24,49 +25,98 @@ import nanodegree.izhang.bakingit.Model.recipe;
 
  */
 
-class JsonUtil {
+public class JsonUtil {
 
     /**
      *  Parses the JSON for Movie data, saves the data and returns this as a list
-     * @param movieJsonStr
+     * @param dataStr
      * @return
      * @throws JSONException
      */
-    public static List<recipe> getMovieListFromJson(String movieJsonStr)
+    public static ArrayList<Recipe> getRecipesFromJson(String dataStr)
             throws JSONException {
 
-        /* Results list */
-        final String MOVIEDB_RESULT = "results";
+        /* All attributes involved in the JSON data */
+        final String RECIPE_ID = "id";
+        final String RECIPE_NAME = "name";
+        final String RECIPE_INGREDIENTS = "ingredients";
+        final String RECIPE_STEPS = "steps";
+        final String RECIPE_SERVINGS = "servings";
+        final String RECIPE_IMAGE = "image";
 
-//        /* All attributes of the movie and their information */
-//        final String MOVIE_TITLE = "title";
-//        final String MOVIE_RELEASE = "release_date";
-//        final String POSTER_PATH = "poster_path";
-//        final String MOVIE_OVERVIEW = "overview";
-//        final String VOTE_AVG = "vote_average";
-//        final String MOVIE_ID = "id";
-//
-//        /* String array to hold each day's weather String */
-//        ArrayList<recipe> movieList = new ArrayList<>();
-//
-//        JSONObject movieJson = new JSONObject(movieJsonStr);
-//
-//        JSONArray movieArray = movieJson.getJSONArray(MOVIEDB_RESULT);
-//
-//        /* Looping through the array and saving the movie values into a list of movies passed back to the calling method. */
-//        for (int i = 0; i < movieArray.length(); i++) {
-//            JSONObject tempObj = (JSONObject) movieArray.get(i);
-//            //Log.v("MovieJsonUtils", tempObj.toString());
-//            Movie movie = new Movie(tempObj.getString(MOVIE_TITLE),
-//                    tempObj.getString(MOVIE_RELEASE),
-//                    tempObj.getString(POSTER_PATH),
-//                    tempObj.getString(MOVIE_OVERVIEW),
-//                    tempObj.getInt(VOTE_AVG),
-//                    tempObj.getString(MOVIE_ID));
-//            movieList.add(movie);
-//        }
+        final String INGREDIENT = "ingredient";
+        final String INGREDIENT_QTY = "quantity";
+        final String INGREDIENT_MEASURE = "measure";
 
-        return new ArrayList<>();
+        final String STEPS_ID = "id";
+        final String STEPS_SHRT_DESC = "shortDescription";
+        final String STEPS_DESC = "description";
+        final String STEPS_VIDEO_URL = "videoURL";
+        final String STEPS_THUMB_URL = "thumbnailURL";
+
+        // Define the array
+        JSONArray recipeJsonArr = new JSONArray(dataStr);
+
+        // Loop through the array for reach Recipe
+        // Pull the data of reach Recipe
+        // Loop through arrays of ingredients and Step
+        // Pull the data of each recipes and Step
+
+        ArrayList<Recipe> recipeList = new ArrayList<>();
+
+        for(int i = 0; i < recipeJsonArr.length(); i++){
+            JSONObject recipeObj = (JSONObject) recipeJsonArr.get(i);
+            String id = recipeObj.getString(RECIPE_ID);
+            String name = recipeObj.getString(RECIPE_NAME);
+            int servings = recipeObj.getInt(RECIPE_SERVINGS);
+            String image = recipeObj.getString(RECIPE_IMAGE);
+
+            ArrayList<Ingredient> ingredientList = new ArrayList<>();
+            JSONArray ingredientsArr = recipeObj.getJSONArray(RECIPE_INGREDIENTS);
+            for(int j = 0 ; j < ingredientsArr.length(); j++){
+                JSONObject tempObj = (JSONObject) ingredientsArr.get(j);
+                Ingredient ingredient = new Ingredient(
+                        tempObj.getInt(INGREDIENT_QTY),
+                        tempObj.getString(INGREDIENT_MEASURE),
+                        tempObj.getString(INGREDIENT));
+
+                ingredientList.add(ingredient);
+                // qty, measure, Ingredient
+            }
+
+            ArrayList<Step> stepList = new ArrayList<>();
+            JSONArray stepsArr = recipeObj.getJSONArray(RECIPE_STEPS);
+            for(int h = 0; h < stepsArr.length(); h++){
+                JSONObject tempObj = (JSONObject) stepsArr.get(h);
+                // id, short desc, desc, video, thumbnail
+
+                Step step = new Step(
+                        tempObj.getString(STEPS_ID),
+                        tempObj.getString(STEPS_SHRT_DESC),
+                        tempObj.getString(STEPS_DESC),
+                        tempObj.getString(STEPS_VIDEO_URL),
+                        tempObj.getString(STEPS_THUMB_URL));
+
+                stepList.add(step);
+
+            }
+
+            Recipe recipe = new Recipe(
+                    id,
+                    name,
+                    ingredientList,
+                    stepList,
+                    servings,
+                    image
+            );
+
+            Log.v("JSON Util", "Recipe: " + recipe.toString());
+
+            recipeList.add(recipe);
+
+        }
+
+        return recipeList;
     }
 
 

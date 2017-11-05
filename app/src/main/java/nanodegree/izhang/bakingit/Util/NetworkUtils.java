@@ -20,16 +20,6 @@ public final class NetworkUtils {
 
     private static final String RECIPE_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
-    /*
-     * NOTE: These values only effect responses from OpenWeatherMap, NOT from the fake weather
-     * server. They are simply here to allow us to teach you how to build a URL if you were to use
-     * a real API.If you want to connect your app to OpenWeatherMap's API, feel free to! However,
-     * we are not going to show you how to do so in this course.
-     */
-
-    public static final int REVIEWS = 400;
-
-
     /**
      * Builds the URL based on the passed in sort the user wants.
      *
@@ -50,7 +40,6 @@ public final class NetworkUtils {
 
         return url;
     }
-
 
     /**
      * This method returns the entire result from the HTTP response.
