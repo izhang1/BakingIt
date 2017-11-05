@@ -4,14 +4,14 @@ package nanodegree.izhang.bakingit.Model;
  * Created by ivanzhang on 11/2/17.
  */
 
-public class steps {
-    private int id;
+public class Step {
+    private String id;
     private String shortDescription;
     private String description;
     private String videoUrl;
     private String thumbnailUrl;
 
-    public steps(int id, String shortDescription, String description, String videoUrl, String thumbnailUrl){
+    public Step(String id, String shortDescription, String description, String videoUrl, String thumbnailUrl){
         this.id = id;
         this.shortDescription = shortDescription;
         this.description = description;
@@ -19,11 +19,11 @@ public class steps {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

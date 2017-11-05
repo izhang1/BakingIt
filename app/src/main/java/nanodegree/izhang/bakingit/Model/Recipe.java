@@ -6,20 +6,20 @@ import java.util.List;
  * Created by ivanzhang on 11/2/17.
  */
 
-public class recipe {
+public class Recipe {
 
     private String id;
     private String name;
-    private List<ingredient> ingredientList;
-    private List<steps> stepsList;
+    private List<Ingredient> ingredientList;
+    private List<Step> stepList;
     private int servings;
     private String image;
 
-    public recipe(String id, String name, List<ingredient> ingredientList, List<steps> stepsList, int servings, String image) {
+    public Recipe(String id, String name, List<Ingredient> ingredientList, List<Step> stepList, int servings, String image) {
         this.id = id;
         this.name = name;
         this.ingredientList = ingredientList;
-        this.stepsList = stepsList;
+        this.stepList = stepList;
         this.servings = servings;
         this.image = image;
     }
@@ -49,20 +49,20 @@ public class recipe {
         this.name = name;
     }
 
-    public List<ingredient> getIngredientList() {
+    public List<Ingredient> getIngredientList() {
         return ingredientList;
     }
 
-    public void setIngredientList(List<ingredient> ingredientList) {
+    public void setIngredientList(List<Ingredient> ingredientList) {
         this.ingredientList = ingredientList;
     }
 
-    public List<steps> getStepsList() {
-        return stepsList;
+    public List<Step> getStepList() {
+        return stepList;
     }
 
-    public void setStepsList(List<steps> stepsList) {
-        this.stepsList = stepsList;
+    public void setStepList(List<Step> stepList) {
+        this.stepList = stepList;
     }
 
     public int getServings() {

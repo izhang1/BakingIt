@@ -4,13 +4,13 @@ package nanodegree.izhang.bakingit.Model;
  * Created by ivanzhang on 11/2/17.
  */
 
-public class ingredient {
+public class Ingredient {
 
     private int quantity;
     private String measure;
     private String ingredients;
 
-    public ingredient(int quantity, String measure, String ingredients){
+    public Ingredient(int quantity, String measure, String ingredients){
         this.quantity = quantity;
         this.measure = measure;
         this.ingredients = ingredients;
