@@ -2,6 +2,9 @@ package nanodegree.izhang.bakingit.Model;
 
 /**
  * Created by ivanzhang on 11/2/17.
+ *
+ * Model of the step by step instructions for each recipe.
+ *
  */
 
 public class Step {

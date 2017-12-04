@@ -10,8 +10,8 @@ public class Recipe {
 
     private String id;
     private String name;
-    private List<Ingredient> ingredientList;
-    private List<Step> stepList;
+    private List<Ingredient> ingredientList; // Each recipe has a list of ingredients
+    private List<Step> stepList; // Each recipe has a list of steps
     private int servings;
     private String image;
 

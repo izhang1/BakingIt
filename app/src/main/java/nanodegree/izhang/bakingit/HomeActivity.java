@@ -49,7 +49,6 @@ public class HomeActivity extends AppCompatActivity {
          * 4. Create the adapter to show the data and recognize onclicks
          *
          */
-
     }
 
     public void loadRecyclerViewRecipeData(){
