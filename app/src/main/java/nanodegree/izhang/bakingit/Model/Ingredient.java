@@ -1,5 +1,7 @@
 package nanodegree.izhang.bakingit.Model;
 
+import java.io.Serializable;
+
 /**
  * Created by ivanzhang on 11/2/17.
  *
@@ -7,7 +9,7 @@ package nanodegree.izhang.bakingit.Model;
  *
  */
 
-public class Ingredient {
+public class Ingredient implements Serializable {
 
     private int quantity;
     private String measure;

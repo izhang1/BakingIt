@@ -41,14 +41,6 @@ public class HomeActivity extends AppCompatActivity {
 
         mRecipeRV.setAdapter(mRecipeAdapter);
 
-        /**
-         * RecyclerView TODOs
-         * DONE 1. Add the recycler view onto the home layout
-         * DONE 2. Create the cardview layout for each item
-         * 3. Initialize the recyclerview in oncreate
-         * 4. Create the adapter to show the data and recognize onclicks
-         *
-         */
     }
 
     public void loadRecyclerViewRecipeData(){

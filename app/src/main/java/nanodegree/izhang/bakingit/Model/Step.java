@@ -1,5 +1,7 @@
 package nanodegree.izhang.bakingit.Model;
 
+import java.io.Serializable;
+
 /**
  * Created by ivanzhang on 11/2/17.
  *
@@ -7,7 +9,7 @@ package nanodegree.izhang.bakingit.Model;
  *
  */
 
-public class Step {
+public class Step implements Serializable {
     private String id;
     private String shortDescription;
     private String description;

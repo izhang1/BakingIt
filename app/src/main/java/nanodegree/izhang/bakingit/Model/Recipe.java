@@ -1,12 +1,13 @@
 package nanodegree.izhang.bakingit.Model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by ivanzhang on 11/2/17.
  */
 
-public class Recipe {
+public class Recipe implements Serializable {
 
     private String id;
     private String name;
