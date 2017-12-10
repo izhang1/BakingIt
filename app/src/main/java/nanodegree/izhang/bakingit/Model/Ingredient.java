@@ -2,6 +2,8 @@ package nanodegree.izhang.bakingit.Model;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+
 /**
  * Created by ivanzhang on 11/2/17.
  *
@@ -9,11 +11,13 @@ import java.io.Serializable;
  *
  */
 
-public class Ingredient implements Serializable {
+public class Ingredient extends RealmObject implements Serializable{
 
     private int quantity;
     private String measure;
     private String ingredients;
+
+    public Ingredient(){};
 
     public Ingredient(int quantity, String measure, String ingredients){
         this.quantity = quantity;

@@ -2,6 +2,8 @@ package nanodegree.izhang.bakingit.Model;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+
 /**
  * Created by ivanzhang on 11/2/17.
  *
@@ -9,12 +11,14 @@ import java.io.Serializable;
  *
  */
 
-public class Step implements Serializable {
+public class Step extends RealmObject implements Serializable {
     private String id;
     private String shortDescription;
     private String description;
     private String videoUrl;
     private String thumbnailUrl;
+
+    public Step(){};
 
     public Step(String id, String shortDescription, String description, String videoUrl, String thumbnailUrl){
         this.id = id;

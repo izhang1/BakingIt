@@ -1,8 +1,10 @@
 package nanodegree.izhang.bakingit;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +13,37 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
+import io.realm.RealmBaseAdapter;
+import io.realm.RealmRecyclerViewAdapter;
+import io.realm.RealmResults;
 import nanodegree.izhang.bakingit.Model.Recipe;
 
 /**
  * Created by ivanzhang on 11/5/17.
  */
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
+public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapter.RecipeViewHolder> {
 
-    private ArrayList<Recipe> mRecipeData;
+    private RealmResults<Recipe> mRecipeData;
     private Context context;
 
+    public RecipeAdapter(RealmResults<Recipe> data, boolean autoUpdate) {
+        super(data, autoUpdate);
+        this.mRecipeData = data;
+        if(mRecipeData.size() > 0){
+            Log.v("TAG", "YEY");
+        }
+    }
+
+
+    public void setData(RealmResults<Recipe> data){
+        this.mRecipeData = data;
+    }
+
     @Override
-    public RecipeViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public RecipeViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.recipe_item;
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -33,24 +53,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         return new RecipeViewHolder(view);
     }
 
-    // Load any data here into the cardview
     @Override
-    public void onBindViewHolder(RecipeViewHolder holder, int position) {
+    public void onBindViewHolder(RecipeAdapter.RecipeViewHolder holder, int position) {
         Recipe recipe = mRecipeData.get(position);
         holder.textView.setText(recipe.getName());
     }
 
     @Override
-    public int getItemCount() {
-        if(mRecipeData != null){
-            return mRecipeData.size();
-        }else{
-            return 0;
-        }
-    }
-
-    public void setData(ArrayList<Recipe> data){
-        this.mRecipeData = data;
+    public long getItemId(int position) {
+        return getItem(position).getId();
     }
 
     /**
@@ -80,3 +91,32 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
 
 }
+
+// todo: Remove if we don't need anymore after learning realm
+//    @Override
+//    public RecipeViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+//        context = viewGroup.getContext();
+//        int layoutIdForListItem = R.layout.recipe_item;
+//        LayoutInflater inflater = LayoutInflater.from(context);
+//        boolean shouldAttachToParentImmediately = false;
+//
+//        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+//        return new RecipeViewHolder(view);
+//    }
+//
+//    // Load any data here into the cardview
+//    @Override
+//    public void onBindViewHolder(RecipeViewHolder holder, int position) {
+//        Recipe recipe = mRecipeData.get(position);
+//        Realm realm = Realm.getDefaultInstance();
+//        holder.textView.setText(recipe.getName());
+//    }
+//
+//    @Override
+//    public int getItemCount() {
+//        if(mRecipeData != null){
+//            return mRecipeData.size();
+//        }else{
+//            return 0;
+//        }
+//    }

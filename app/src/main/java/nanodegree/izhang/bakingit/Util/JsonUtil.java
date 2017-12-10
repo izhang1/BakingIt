@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmList;
 import nanodegree.izhang.bakingit.Model.Ingredient;
 import nanodegree.izhang.bakingit.Model.Recipe;
 import nanodegree.izhang.bakingit.Model.Step;
@@ -66,49 +68,62 @@ public class JsonUtil {
 
         for(int i = 0; i < recipeJsonArr.length(); i++){
             JSONObject recipeObj = (JSONObject) recipeJsonArr.get(i);
-            String id = recipeObj.getString(RECIPE_ID);
+            int id = recipeObj.getInt(RECIPE_ID);
             String name = recipeObj.getString(RECIPE_NAME);
             int servings = recipeObj.getInt(RECIPE_SERVINGS);
             String image = recipeObj.getString(RECIPE_IMAGE);
 
-            ArrayList<Ingredient> ingredientList = new ArrayList<>();
+            RealmList<Ingredient> ingredientList = new RealmList<>();
             JSONArray ingredientsArr = recipeObj.getJSONArray(RECIPE_INGREDIENTS);
             for(int j = 0 ; j < ingredientsArr.length(); j++){
                 JSONObject tempObj = (JSONObject) ingredientsArr.get(j);
-                Ingredient ingredient = new Ingredient(
-                        tempObj.getInt(INGREDIENT_QTY),
-                        tempObj.getString(INGREDIENT_MEASURE),
-                        tempObj.getString(INGREDIENT));
+
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                Ingredient ingredient = realm.createObject(Ingredient.class);
+                ingredient.setIngredients(tempObj.getString(INGREDIENT));
+                ingredient.setMeasure(tempObj.getString(INGREDIENT_MEASURE));
+                ingredient.setQuantity(tempObj.getInt(INGREDIENT_QTY));
+                realm.commitTransaction();
 
                 ingredientList.add(ingredient);
                 // qty, measure, Ingredient
             }
 
-            ArrayList<Step> stepList = new ArrayList<>();
+            RealmList<Step> stepList = new RealmList<>();
             JSONArray stepsArr = recipeObj.getJSONArray(RECIPE_STEPS);
             for(int h = 0; h < stepsArr.length(); h++){
                 JSONObject tempObj = (JSONObject) stepsArr.get(h);
                 // id, short desc, desc, video, thumbnail
 
-                Step step = new Step(
-                        tempObj.getString(STEPS_ID),
-                        tempObj.getString(STEPS_SHRT_DESC),
-                        tempObj.getString(STEPS_DESC),
-                        tempObj.getString(STEPS_VIDEO_URL),
-                        tempObj.getString(STEPS_THUMB_URL));
+
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                Step step = realm.createObject(Step.class);
+                step.setId(tempObj.getString(STEPS_ID));
+                step.setShortDescription(tempObj.getString(STEPS_SHRT_DESC));
+                step.setDescription(tempObj.getString(STEPS_DESC));
+                step.setVideoUrl(tempObj.getString(STEPS_VIDEO_URL));
+                step.setThumbnailUrl(tempObj.getString(STEPS_THUMB_URL));
+
+                realm.commitTransaction();
 
                 stepList.add(step);
 
             }
 
-            Recipe recipe = new Recipe(
-                    id,
-                    name,
-                    ingredientList,
-                    stepList,
-                    servings,
-                    image
-            );
+            // Realm Code
+            Realm realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            Recipe recipe = realm.createObject(Recipe.class);
+            recipe.setId(id);
+            recipe.setName(name);
+            recipe.setIngredientList(ingredientList);
+            recipe.setStepList(stepList);
+            recipe.setImage(image);
+
+            realm.commitTransaction();
+
 
             Log.v("JSON Util", "Recipe: " + recipe.toString());
 

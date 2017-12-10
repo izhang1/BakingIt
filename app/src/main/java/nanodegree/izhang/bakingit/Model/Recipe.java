@@ -3,20 +3,26 @@ package nanodegree.izhang.bakingit.Model;
 import java.io.Serializable;
 import java.util.List;
 
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by ivanzhang on 11/2/17.
  */
 
-public class Recipe implements Serializable {
+public class Recipe extends RealmObject implements Serializable {
 
-    private String id;
+    private int id;
     private String name;
-    private List<Ingredient> ingredientList; // Each recipe has a list of ingredients
-    private List<Step> stepList; // Each recipe has a list of steps
+    private RealmList<Ingredient> ingredientList; // Each recipe has a list of ingredients
+    private RealmList<Step> stepList; // Each recipe has a list of steps
     private int servings;
     private String image;
 
-    public Recipe(String id, String name, List<Ingredient> ingredientList, List<Step> stepList, int servings, String image) {
+    public Recipe(){};
+
+    public Recipe(int id, String name, RealmList<Ingredient> ingredientList, RealmList<Step> stepList, int servings, String image) {
         this.id = id;
         this.name = name;
         this.ingredientList = ingredientList;
@@ -33,12 +39,12 @@ public class Recipe implements Serializable {
                 "Images: " + image + '\n';
     }
 
-    public String getId() {
+    public long getId() {
 
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -54,7 +60,7 @@ public class Recipe implements Serializable {
         return ingredientList;
     }
 
-    public void setIngredientList(List<Ingredient> ingredientList) {
+    public void setIngredientList(RealmList<Ingredient> ingredientList) {
         this.ingredientList = ingredientList;
     }
 
@@ -62,7 +68,7 @@ public class Recipe implements Serializable {
         return stepList;
     }
 
-    public void setStepList(List<Step> stepList) {
+    public void setStepList(RealmList<Step> stepList) {
         this.stepList = stepList;
     }
 

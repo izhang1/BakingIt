@@ -1,6 +1,7 @@
 package nanodegree.izhang.bakingit;
 
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import nanodegree.izhang.bakingit.Model.Recipe;
 import nanodegree.izhang.bakingit.Util.JsonUtil;
 import nanodegree.izhang.bakingit.Util.NetworkUtils;
@@ -28,23 +31,40 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        // Testing network and http request
-        GetRecipeTask task = new GetRecipeTask();
-        task.execute();
+        // Init Realm
+        Realm.init(this);
 
-        mRecipeRV = (RecyclerView) this.findViewById(R.id.rv_recipe);
+        // Get recipe from Realm if available
+        // Save data to realm database
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<Recipe> recipes = realm.where(Recipe.class).findAll();
+
+        if(recipes.size() < 0) // Has no value from database
+        {
+            // Testing network and http request
+            GetRecipeTask task = new GetRecipeTask();
+            task.execute();
+        }
+
+
+        mRecipeRV = (RecyclerView) this.findViewById(R.id.realm_recycler_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecipeRV.setLayoutManager(layoutManager);
 
-        mRecipeAdapter = new RecipeAdapter();
+        mRecipeAdapter = new RecipeAdapter(recipes, false);
 
         mRecipeRV.setAdapter(mRecipeAdapter);
-
+        mRecipeAdapter.setData(recipes);
+        mRecipeAdapter.notifyDataSetChanged();
     }
 
     public void loadRecyclerViewRecipeData(){
-        mRecipeAdapter.setData(mData);
+        // Realm Test code
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<Recipe> recipes = realm.where(Recipe.class).findAll();
+
+        mRecipeAdapter.setData(recipes);
         mRecipeAdapter.notifyDataSetChanged();
     }
 
