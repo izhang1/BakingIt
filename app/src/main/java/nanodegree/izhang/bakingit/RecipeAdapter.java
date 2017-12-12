@@ -1,6 +1,8 @@
 package nanodegree.izhang.bakingit;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -86,37 +88,14 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
             // Add this
             Recipe recipe = mRecipeData.get(getAdapterPosition());
             Toast.makeText(context, "Recipe clicked!" + recipe.toString(), Toast.LENGTH_SHORT).show();
+
+            // Passing the recipe data and starting the bundle
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra(context.getString(R.string.passed_recipe_id), recipe.getId());
+            context.startActivity(intent);
+
         }
     }
 
 
 }
-
-// todo: Remove if we don't need anymore after learning realm
-//    @Override
-//    public RecipeViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-//        context = viewGroup.getContext();
-//        int layoutIdForListItem = R.layout.recipe_item;
-//        LayoutInflater inflater = LayoutInflater.from(context);
-//        boolean shouldAttachToParentImmediately = false;
-//
-//        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-//        return new RecipeViewHolder(view);
-//    }
-//
-//    // Load any data here into the cardview
-//    @Override
-//    public void onBindViewHolder(RecipeViewHolder holder, int position) {
-//        Recipe recipe = mRecipeData.get(position);
-//        Realm realm = Realm.getDefaultInstance();
-//        holder.textView.setText(recipe.getName());
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        if(mRecipeData != null){
-//            return mRecipeData.size();
-//        }else{
-//            return 0;
-//        }
-//    }

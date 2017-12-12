@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if(recipes.size() < 0) // Has no value from database
         {
-            // Testing network and http request
+            // Run the network request
             GetRecipeTask task = new GetRecipeTask();
             task.execute();
         }
