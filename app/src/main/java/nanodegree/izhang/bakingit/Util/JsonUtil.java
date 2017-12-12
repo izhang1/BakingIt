@@ -100,7 +100,7 @@ public class JsonUtil {
                 Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
                 Step step = realm.createObject(Step.class);
-                step.setId(tempObj.getString(STEPS_ID));
+                step.setId(tempObj.getInt(STEPS_ID));
                 step.setShortDescription(tempObj.getString(STEPS_SHRT_DESC));
                 step.setDescription(tempObj.getString(STEPS_DESC));
                 step.setVideoUrl(tempObj.getString(STEPS_VIDEO_URL));

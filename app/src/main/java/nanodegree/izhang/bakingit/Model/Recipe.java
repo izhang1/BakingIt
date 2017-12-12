@@ -11,7 +11,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by ivanzhang on 11/2/17.
  */
 
-public class Recipe extends RealmObject implements Serializable {
+public class Recipe extends RealmObject {
 
     private int id;
     private String name;

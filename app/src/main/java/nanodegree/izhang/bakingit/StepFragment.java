@@ -1,7 +1,6 @@
 package nanodegree.izhang.bakingit;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,30 +8,36 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import io.realm.Realm;
 import nanodegree.izhang.bakingit.Model.Recipe;
+import nanodegree.izhang.bakingit.Model.Step;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link RecipeFragment.OnFragmentInteractionListener} interface
+ * {@link StepFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link RecipeFragment#newInstance} factory method to
+ * Use the {@link StepFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecipeFragment extends Fragment {
+public class StepFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM = "recipeId";
+    private static final String ARG_PARAM1 = "stepId";
+    private static final String ARG_PARAM2 = "recipeId";
+    private static final int INVALID_ID = -1;
 
-    private long mRecipeId;
-    private Recipe currentRecipe;
+
+    // TODO: Rename and change types of parameters
+    private int stepId;
+    private long recipeId;
+
 
     private OnFragmentInteractionListener mListener;
 
-    public RecipeFragment() {
+    public StepFragment() {
         // Required empty public constructor
     }
 
@@ -40,12 +45,14 @@ public class RecipeFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment RecipeFragment.
+     * @return A new instance of fragment StepFragment.
      */
-    public static RecipeFragment newInstance(long recipeId) {
-        RecipeFragment fragment = new RecipeFragment();
+    // TODO: Rename and change types and number of parameters
+    public static StepFragment newInstance(int stepId, long recipeId) {
+        StepFragment fragment = new StepFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_PARAM, recipeId);
+        args.putInt(ARG_PARAM1, stepId);
+        args.putLong(ARG_PARAM2, recipeId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,35 +61,24 @@ public class RecipeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mRecipeId = getArguments().getLong(ARG_PARAM);
+            stepId = getArguments().getInt(ARG_PARAM1);
+            recipeId = getArguments().getLong(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_recipe, container, false);
+        View view = inflater.inflate(R.layout.fragment_step, container, false);
 
-        Realm realm = Realm.getDefaultInstance();
-        currentRecipe = realm.where(Recipe.class).equalTo("id", mRecipeId).findFirst();
-
-        Log.v("RecipeFragment", "Recipe: " + currentRecipe.toString());
-
-        getActivity().setTitle("Recipe: " + currentRecipe.getName());
-
-        Button stepButton = (Button) view.findViewById(R.id.stepButton);
-        stepButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), StepActivity.class);
-                intent.putExtra("StepId", 2);
-                intent.putExtra("RecipeId", mRecipeId);
-                startActivity(intent);
-            }
-        });
-
+        // Setup views here
+        if(stepId != INVALID_ID && recipeId != INVALID_ID){
+            Realm realm = Realm.getDefaultInstance();
+            Recipe recipe = realm.where(Recipe.class).equalTo("id", recipeId).findFirst();
+            Step step = recipe.getStepList().get(stepId);
+            Log.v("StepFragment", "Step: " + step.getDescription());
+        }
 
         return view;
     }

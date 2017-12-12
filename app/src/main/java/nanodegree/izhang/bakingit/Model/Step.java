@@ -11,8 +11,8 @@ import io.realm.RealmObject;
  *
  */
 
-public class Step extends RealmObject implements Serializable {
-    private String id;
+public class Step extends RealmObject{
+    private int id;
     private String shortDescription;
     private String description;
     private String videoUrl;
@@ -20,7 +20,7 @@ public class Step extends RealmObject implements Serializable {
 
     public Step(){};
 
-    public Step(String id, String shortDescription, String description, String videoUrl, String thumbnailUrl){
+    public Step(int id, String shortDescription, String description, String videoUrl, String thumbnailUrl){
         this.id = id;
         this.shortDescription = shortDescription;
         this.description = description;
@@ -28,11 +28,11 @@ public class Step extends RealmObject implements Serializable {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

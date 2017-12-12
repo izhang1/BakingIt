@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
         Realm realm = Realm.getDefaultInstance();
         RealmResults<Recipe> recipes = realm.where(Recipe.class).findAll();
 
-        if(recipes.size() < 0) // Has no value from database
+        if(recipes.size() <= 0) // Has no value from database
         {
             // Run the network request
             GetRecipeTask task = new GetRecipeTask();

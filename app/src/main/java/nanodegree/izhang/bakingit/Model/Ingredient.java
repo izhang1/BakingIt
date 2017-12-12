@@ -11,7 +11,7 @@ import io.realm.RealmObject;
  *
  */
 
-public class Ingredient extends RealmObject implements Serializable{
+public class Ingredient extends RealmObject {
 
     private int quantity;
     private String measure;
