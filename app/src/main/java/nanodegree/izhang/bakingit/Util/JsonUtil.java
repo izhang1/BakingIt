@@ -121,6 +121,7 @@ public class JsonUtil {
             recipe.setIngredientList(ingredientList);
             recipe.setStepList(stepList);
             recipe.setImage(image);
+            recipe.setServings(servings);
 
             realm.commitTransaction();
 
