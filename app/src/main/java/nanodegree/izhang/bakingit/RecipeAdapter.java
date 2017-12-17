@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmBaseAdapter;
@@ -73,13 +75,12 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
      */
     public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private CardView recipeCard;
-        private TextView textView;
+        @BindView(R.id.recipe_card) CardView recipeCard;
+        @BindView(R.id.tv_recipe_name) TextView textView;
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
-            recipeCard = (CardView) itemView.findViewById(R.id.recipe_card);
-            textView = (TextView) itemView.findViewById(R.id.tv_recipe_name);
+            ButterKnife.bind(this, itemView);
             recipeCard.setOnClickListener(this);
         }
 

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import nanodegree.izhang.bakingit.Model.Recipe;
@@ -23,13 +25,17 @@ import nanodegree.izhang.bakingit.Util.NetworkUtils;
 public class HomeActivity extends AppCompatActivity {
 
     ArrayList<Recipe> mData;
-    RecyclerView mRecipeRV;
     RecipeAdapter mRecipeAdapter;
+
+    @BindView(R.id.realm_recycler_view) RecyclerView mRecipeRV;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        ButterKnife.bind(this);
 
         // Init Realm
         Realm.init(this);
@@ -45,9 +51,6 @@ public class HomeActivity extends AppCompatActivity {
             GetRecipeTask task = new GetRecipeTask();
             task.execute();
         }
-
-
-        mRecipeRV = (RecyclerView) this.findViewById(R.id.realm_recycler_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecipeRV.setLayoutManager(layoutManager);
