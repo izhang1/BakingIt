@@ -1,102 +1,98 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context="nanodegree.izhang.bakingit.RecipeFragment">
 
-    <ScrollView
+<ScrollView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="nanodegree.izhang.bakingit.RecipeFragment">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_serving_ingredients"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
 
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_serving_ingredients"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="8dp">
 
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/tv_serving_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toEndOf="@+id/tv_serving_size_label"
+                    android:text="2 Servings"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tv_serving_size_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Service Size:"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_recipe_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_serving_size"
+                    android:layout_marginTop="4dp"
+                    android:text="Recipe"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_ingredient_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
+                    android:layout_below="@+id/tv_recipe_label"
+                    android:layout_marginTop="4dp" />
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/tv_serving_size"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="2dp"
-                        android:layout_toEndOf="@+id/tv_serving_size_label"
-                        android:text="2 Servings"
-                        android:textSize="20dp" />
+        </android.support.v7.widget.CardView>
 
-                    <TextView
-                        android:id="@+id/tv_serving_size_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:text="Service Size:"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_steps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cv_serving_ingredients"
+            android:layout_margin="8dp">
 
-                    <TextView
-                        android:id="@+id/tv_recipe_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_serving_size"
-                        android:layout_marginTop="4dp"
-                        android:text="Recipe"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <ListView
-                        android:id="@+id/lv_ingredient_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_recipe_label"
-                        android:layout_marginTop="4dp" />
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cv_steps"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/cv_serving_ingredients"
+                android:layout_height="match_parent"
                 android:layout_margin="8dp">
 
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/tv_step_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Steps"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_step_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp">
-
-                    <TextView
-                        android:id="@+id/tv_step_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Steps"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_step_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@+id/tv_step_label"
-                        android:layout_marginTop="4dp" />
+                    android:layout_below="@+id/tv_step_label"
+                    android:layout_marginTop="4dp" />
 
 
-                </RelativeLayout>
+            </RelativeLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
-        </RelativeLayout>
-    </ScrollView>
-
-</FrameLayout>
+    </RelativeLayout>
+</ScrollView>

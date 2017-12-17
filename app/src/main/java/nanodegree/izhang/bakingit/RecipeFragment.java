@@ -39,7 +39,7 @@ public class RecipeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     @BindView(R.id.tv_serving_size) TextView tv_servingsize;
-    @BindView(R.id.lv_ingredient_list) ListView list_ingredients;
+    @BindView(R.id.rv_ingredient_list) RecyclerView list_ingredients;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -93,7 +93,9 @@ public class RecipeFragment extends Fragment {
         }
 
         // Setup the ingredients listview
-        list_ingredients.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, ingredientList));
+        list_ingredients.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        IngredientAdapter ingredientAdapter = new IngredientAdapter(ingredientList);
+        list_ingredients.setAdapter(ingredientAdapter);
 
 
         // Step RecyclerView
@@ -102,6 +104,7 @@ public class RecipeFragment extends Fragment {
 
         List<Step> stepList = mRecipe.getStepList();
         StepAdapter stepAdapter = new StepAdapter((RealmList)stepList, false);
+        stepAdapter.setRecipeId(mRecipeId);
         list_steps.setAdapter(stepAdapter);
 
 

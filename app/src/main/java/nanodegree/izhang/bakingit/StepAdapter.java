@@ -2,6 +2,7 @@ package nanodegree.izhang.bakingit;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,6 +27,7 @@ import nanodegree.izhang.bakingit.Model.Step;
 public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.StepViewHolder> {
 
     private RealmList<Step> mStepData;
+    private long recipeId;
     private Context context;
 
     public StepAdapter(RealmList<Step> data, boolean autoUpdate) {
@@ -34,6 +36,10 @@ public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.Step
         if(mStepData.size() > 0){
             Log.v("TAG", "YEY");
         }
+    }
+
+    public void setRecipeId(long recipeId){
+        this.recipeId = recipeId;
     }
 
 
@@ -55,7 +61,8 @@ public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.Step
     @Override
     public void onBindViewHolder(StepAdapter.StepViewHolder holder, int position) {
         Step step = mStepData.get(position);
-        holder.textView.setText(step.getShortDescription());
+        int stepCount = step.getId() + 1;
+        holder.textView.setText(stepCount + ". " + step.getShortDescription());
     }
 
     @Override
@@ -85,8 +92,15 @@ public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.Step
         public void onClick(View v) {
             // Add this
             Step step = mStepData.get(getAdapterPosition());
-            Toast.makeText(context, "Recipe clicked!" + step.getDescription().toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Recipe clicked!" + step.getDescription().toString(), Toast.LENGTH_SHORT).show();
 
+            Intent intent = new Intent(context, StepActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("StepId", step.getId());
+            bundle.putLong("RecipeId", recipeId);
+            intent.putExtras(bundle);
+
+            context.startActivity(intent);
         }
     }
 
