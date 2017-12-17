@@ -5,32 +5,41 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
+import nanodegree.izhang.bakingit.Model.Ingredient;
 import nanodegree.izhang.bakingit.Model.Recipe;
+import nanodegree.izhang.bakingit.Model.Step;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link RecipeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link RecipeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RecipeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM = "recipeId";
 
     private long mRecipeId;
-    private Recipe currentRecipe;
+    private Recipe mRecipe;
 
     private OnFragmentInteractionListener mListener;
+
+    @BindView(R.id.tv_serving_size) TextView tv_servingsize;
+    @BindView(R.id.lv_ingredient_list) ListView list_ingredients;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -65,23 +74,35 @@ public class RecipeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recipe, container, false);
 
+        ButterKnife.bind(this, view);
+
+        // Get the data
         Realm realm = Realm.getDefaultInstance();
-        currentRecipe = realm.where(Recipe.class).equalTo("id", mRecipeId).findFirst();
+        mRecipe = realm.where(Recipe.class).equalTo("id", mRecipeId).findFirst();
 
-        Log.v("RecipeFragment", "Recipe: " + currentRecipe.toString());
+        // Set the title to the recipe
+        getActivity().setTitle("Recipe: " + mRecipe.getName());
 
-        getActivity().setTitle("Recipe: " + currentRecipe.getName());
+        // Set the other data views
+        tv_servingsize.setText(mRecipe.getServings() + " servings");
 
-        Button stepButton = (Button) view.findViewById(R.id.stepButton);
-        stepButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), StepActivity.class);
-                intent.putExtra("StepId", 2);
-                intent.putExtra("RecipeId", mRecipeId);
-                startActivity(intent);
-            }
-        });
+        // Create the arraylist of strings (represents each ingredient)
+        ArrayList<String> ingredientList = new ArrayList<>();
+        for(Ingredient ingredient : mRecipe.getIngredientList()){
+            ingredientList.add(ingredient.toString());
+        }
+
+        // Setup the ingredients listview
+        list_ingredients.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, ingredientList));
+
+
+        // Step RecyclerView
+        RecyclerView list_steps = (RecyclerView) view.findViewById(R.id.rv_step_list);
+        list_steps.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        List<Step> stepList = mRecipe.getStepList();
+        StepAdapter stepAdapter = new StepAdapter((RealmList)stepList, false);
+        list_steps.setAdapter(stepAdapter);
 
 
         return view;
@@ -111,16 +132,6 @@ public class RecipeFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

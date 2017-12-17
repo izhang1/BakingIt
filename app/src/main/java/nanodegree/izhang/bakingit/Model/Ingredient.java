@@ -49,4 +49,9 @@ public class Ingredient extends RealmObject {
     public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
+
+    @Override
+    public String toString() {
+        return quantity + " " + measure + " " + ingredients;
+    }
 }
