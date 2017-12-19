@@ -1,13 +1,32 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="nanodegree.izhang.bakingit.StepFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/exoplayer_video"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="250dp"
+        android:visibility="visible" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/exoplayer_video"
+        android:layout_margin="8dp"
+        android:text="Description"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/button_nextstep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tv_description"
+        android:layout_alignParentBottom="true"
+        android:text="Next Step"
+        android:visibility="invisible"
+        android:background="@color/colorPrimary"/>
+
+</RelativeLayout>
