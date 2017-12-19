@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -94,7 +97,14 @@ public class StepFragment extends Fragment implements View.OnClickListener{
         if(mRecipe.getStepList().size() > (stepId + 1)){
             hasNextStep = true;
             btnNext.setVisibility(View.VISIBLE);
-            btnNext.setOnClickListener(this);
+            btnNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onButtonPressed();
+                }
+            });
+        }
+
         }
 
         // Set title to short description name
@@ -106,10 +116,9 @@ public class StepFragment extends Fragment implements View.OnClickListener{
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onNextStepClicked((stepId + 1));
         }
     }
 
@@ -147,6 +156,6 @@ public class StepFragment extends Fragment implements View.OnClickListener{
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onNextStepClicked(int nextStepId);
     }
 }
