@@ -105,6 +105,10 @@ public class StepFragment extends Fragment implements View.OnClickListener{
             });
         }
 
+        // Check if ExoPlayer is available and hide if not
+        if(mStep.getVideoUrl().isEmpty() || mStep.getVideoUrl() == null){
+            SimpleExoPlayerView exoPlayer = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer_video);
+            exoPlayer.setVisibility(View.GONE);
         }
 
         // Set title to short description name
