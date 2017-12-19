@@ -8,7 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 import nanodegree.izhang.bakingit.Model.Recipe;
 import nanodegree.izhang.bakingit.Model.Step;
@@ -22,18 +27,23 @@ import nanodegree.izhang.bakingit.Model.Step;
  * Use the {@link StepFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StepFragment extends Fragment {
+public class StepFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "stepId";
     private static final String ARG_PARAM2 = "recipeId";
     private static final int INVALID_ID = -1;
 
-
     // TODO: Rename and change types of parameters
     private int stepId;
     private long recipeId;
 
+    private Step mStep;
+    private Recipe mRecipe;
+    private boolean hasNextStep = false;
+
+    @BindView(R.id.tv_description) TextView tvDescription;
+    @BindView(R.id.button_nextstep) Button btnNext;
 
     private OnFragmentInteractionListener mListener;
 
@@ -71,14 +81,27 @@ public class StepFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step, container, false);
+        ButterKnife.bind(this, view);
 
         // Setup views here
         if(stepId != INVALID_ID && recipeId != INVALID_ID){
             Realm realm = Realm.getDefaultInstance();
-            Recipe recipe = realm.where(Recipe.class).equalTo("id", recipeId).findFirst();
-            Step step = recipe.getStepList().get(stepId);
-            Log.v("StepFragment", "Step: " + step.getDescription());
+            mRecipe = realm.where(Recipe.class).equalTo(getContext().getString(R.string.id), recipeId).findFirst();
+            mStep = mRecipe.getStepList().get(stepId);
         }
+
+        // Check if another value is available. If size is less than the current step
+        if(mRecipe.getStepList().size() > (stepId + 1)){
+            hasNextStep = true;
+            btnNext.setVisibility(View.VISIBLE);
+            btnNext.setOnClickListener(this);
+        }
+
+        // Set title to short description name
+        getActivity().setTitle(mStep.getShortDescription());
+
+        // Set the description text
+        tvDescription.setText(mStep.getDescription());
 
         return view;
     }
@@ -105,6 +128,11 @@ public class StepFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        // Tell Activity to show next fragment
     }
 
     /**

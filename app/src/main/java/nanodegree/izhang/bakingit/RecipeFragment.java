@@ -78,13 +78,13 @@ public class RecipeFragment extends Fragment {
 
         // Get the data
         Realm realm = Realm.getDefaultInstance();
-        mRecipe = realm.where(Recipe.class).equalTo("id", mRecipeId).findFirst();
+        mRecipe = realm.where(Recipe.class).equalTo(getString(R.string.id), mRecipeId).findFirst();
 
         // Set the title to the recipe
-        getActivity().setTitle("Recipe: " + mRecipe.getName());
+        getActivity().setTitle(getString(R.string.recipe_fragment_label) + mRecipe.getName());
 
         // Set the other data views
-        tv_servingsize.setText(mRecipe.getServings() + " servings");
+        tv_servingsize.setText(mRecipe.getServings() + getString(R.string.recipe_fragment_servings));
 
         // Create the arraylist of strings (represents each ingredient)
         ArrayList<String> ingredientList = new ArrayList<>();

@@ -1,14 +1,16 @@
 <resources>
     <string name="app_name">BakingIt</string>
 
-    <string name="recipe_fragment_title">Recipe: </string>
-    <string name="recipe_fragment_steps"></string>
+    <string name="recipe_fragment_label">"Recipe: "</string>
+    <string name="recipe_fragment_servings">" Servings"</string>
 
 
     <!-- Identifiers for intents -->
     <string name="passed_recipe_id">id</string>
+    <string name="param_recipe_id">RecipeId</string>
+    <string name="param_step_id">StepId</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Identifier for Realm Query -->
+    <string name="id">id</string>
 
 </resources>

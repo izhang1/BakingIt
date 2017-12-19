@@ -36,11 +36,7 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
     public RecipeAdapter(RealmResults<Recipe> data, boolean autoUpdate) {
         super(data, autoUpdate);
         this.mRecipeData = data;
-        if(mRecipeData.size() > 0){
-            Log.v("TAG", "YEY");
-        }
     }
-
 
     public void setData(RealmResults<Recipe> data){
         this.mRecipeData = data;
@@ -88,7 +84,6 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
         public void onClick(View v) {
             // Add this
             Recipe recipe = mRecipeData.get(getAdapterPosition());
-            Toast.makeText(context, "Recipe clicked!" + recipe.toString(), Toast.LENGTH_SHORT).show();
 
             // Passing the recipe data and starting the bundle
             Intent intent = new Intent(context, DetailActivity.class);

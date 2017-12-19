@@ -20,8 +20,8 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step);
 
-        int stepId = getIntent().getIntExtra("StepId", INVALID_ID);
-        long recipeId = getIntent().getLongExtra("RecipeId", INVALID_ID);
+        int stepId = getIntent().getIntExtra(getString(R.string.param_step_id), INVALID_ID);
+        long recipeId = getIntent().getLongExtra(getString(R.string.param_recipe_id), INVALID_ID);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         StepFragment recipeFragment = StepFragment.newInstance(stepId, recipeId);

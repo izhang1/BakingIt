@@ -10,7 +10,6 @@ import io.realm.Realm;
 import nanodegree.izhang.bakingit.Model.Recipe;
 
 public class DetailActivity extends AppCompatActivity implements RecipeFragment.OnFragmentInteractionListener{
-    private Recipe currentRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -30,6 +30,8 @@ public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.Step
     private long recipeId;
     private Context context;
 
+    private static int INTRO_ID = 0;
+
     public StepAdapter(RealmList<Step> data, boolean autoUpdate) {
         super(data, autoUpdate);
         this.mStepData = data;
@@ -61,8 +63,11 @@ public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.Step
     @Override
     public void onBindViewHolder(StepAdapter.StepViewHolder holder, int position) {
         Step step = mStepData.get(position);
-        int stepCount = step.getId() + 1;
-        holder.textView.setText(stepCount + ". " + step.getShortDescription());
+        if(step.getId() == INTRO_ID){
+            holder.textView.setText(step.getShortDescription());
+        }else{
+            holder.textView.setText(step.getId() + ". " + step.getShortDescription());
+        }
     }
 
     @Override
@@ -96,8 +101,8 @@ public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.Step
 
             Intent intent = new Intent(context, StepActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putInt("StepId", step.getId());
-            bundle.putLong("RecipeId", recipeId);
+            bundle.putInt(context.getString(R.string.param_step_id), step.getId());
+            bundle.putLong(context.getString(R.string.param_recipe_id), recipeId);
             intent.putExtras(bundle);
 
             context.startActivity(intent);
