@@ -6,13 +6,40 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.decoder.DecoderCounters;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.LoopingMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
+import com.google.android.exoplayer2.video.VideoRendererEventListener;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,12 +57,14 @@ import nanodegree.izhang.bakingit.Model.Step;
  * Use the {@link StepFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StepFragment extends Fragment implements View.OnClickListener{
+public class StepFragment extends Fragment implements VideoRendererEventListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "stepId";
     private static final String ARG_PARAM2 = "recipeId";
     private static final int INVALID_ID = -1;
+    private static final String TAG = "StepFragment";
+
 
     // TODO: Rename and change types of parameters
     private int stepId;
@@ -44,6 +73,10 @@ public class StepFragment extends Fragment implements View.OnClickListener{
     private Step mStep;
     private Recipe mRecipe;
     private boolean hasNextStep = false;
+
+    // Used for Exoplayer
+    private SimpleExoPlayerView simpleExoPlayerView;
+    private SimpleExoPlayer player;
 
     @BindView(R.id.tv_description) TextView tvDescription;
     @BindView(R.id.button_nextstep) Button btnNext;
@@ -111,6 +144,81 @@ public class StepFragment extends Fragment implements View.OnClickListener{
             exoPlayer.setVisibility(View.GONE);
         }
 
+        // Setup ExoPlayer
+        // 1. Create a default TrackSelector
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
+        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+
+        // 2. Create a default LoadControl
+        LoadControl loadControl = new DefaultLoadControl();
+
+        // 3. Create the player
+        player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
+        simpleExoPlayerView = new SimpleExoPlayerView(getContext());
+        simpleExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer_video);
+
+        //Set media controller
+        simpleExoPlayerView.setUseController(true);
+        simpleExoPlayerView.requestFocus();
+
+        // Bind the player to the view.
+        simpleExoPlayerView.setPlayer(player);
+
+        Uri mp4VideoUri =Uri.parse(mStep.getVideoUrl()); //Radnom 540p indian channel
+
+        //Produces DataSource instances through which media data is loaded.
+        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "exoplayer2example"), null);
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+
+        MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, dataSourceFactory, extractorsFactory, null, null);
+        final LoopingMediaSource loopingSource = new LoopingMediaSource(videoSource);
+
+        player.prepare(loopingSource);
+
+        player.addListener(new ExoPlayer.EventListener() {
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest) {
+                Log.v(TAG, "Listener-onTimelineChanged...");
+            }
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+                Log.v(TAG, "Listener-onTracksChanged...");
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+                Log.v(TAG, "Listener-onLoadingChanged...isLoading:"+isLoading);
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                Log.v(TAG, "Listener-onPlayerStateChanged..." + playbackState);
+            }
+
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+                Log.v(TAG, "Listener-onPlayerError...");
+                player.stop();
+                player.prepare(loopingSource);
+                player.setPlayWhenReady(true);
+            }
+
+            @Override
+            public void onPositionDiscontinuity() {
+                Log.v(TAG, "Listener-onPositionDiscontinuity...");
+            }
+
+
+        });
+
+        player.setPlayWhenReady(true); //run file/link when ready to play.
+        player.setVideoDebugListener(this); //for listening to resolution change and  outputing the resolution
+
+
+
         // Set title to short description name
         getActivity().setTitle(mStep.getShortDescription());
 
@@ -144,9 +252,40 @@ public class StepFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onClick(View v) {
-        // Tell Activity to show next fragment
+    public void onVideoEnabled(DecoderCounters counters) {
+
     }
+
+    @Override
+    public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
+
+    }
+
+    @Override
+    public void onVideoInputFormatChanged(Format format) {
+
+    }
+
+    @Override
+    public void onDroppedFrames(int count, long elapsedMs) {
+
+    }
+
+    @Override
+    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+
+    }
+
+    @Override
+    public void onRenderedFirstFrame(Surface surface) {
+
+    }
+
+    @Override
+    public void onVideoDisabled(DecoderCounters counters) {
+
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
