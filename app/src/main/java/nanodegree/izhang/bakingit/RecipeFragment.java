@@ -29,7 +29,7 @@ import nanodegree.izhang.bakingit.Model.Recipe;
 import nanodegree.izhang.bakingit.Model.Step;
 
 
-public class RecipeFragment extends Fragment {
+public class RecipeFragment extends Fragment implements StepAdapter.OnItemClickListener{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM = "recipeId";
 
@@ -103,7 +103,7 @@ public class RecipeFragment extends Fragment {
         list_steps.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         List<Step> stepList = mRecipe.getStepList();
-        StepAdapter stepAdapter = new StepAdapter((RealmList)stepList, false);
+        StepAdapter stepAdapter = new StepAdapter((RealmList)stepList, false, this);
         stepAdapter.setRecipeId(mRecipeId);
         list_steps.setAdapter(stepAdapter);
 
@@ -111,12 +111,6 @@ public class RecipeFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -135,8 +129,13 @@ public class RecipeFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onItemClick(int stepId) {
+        mListener.onStepItemClick(stepId);
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onStepItemClick(int stepId);
     }
 }

@@ -30,7 +30,7 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnFr
         mFragMgr = getSupportFragmentManager();
         StepFragment recipeFragment = StepFragment.newInstance(stepId, recipeId);
         mFragMgr.beginTransaction()
-                .add(R.id.fragment_step, recipeFragment)
+                .replace(R.id.fragment_step, recipeFragment)
                 .commit();
 
 

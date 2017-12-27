@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +30,17 @@ public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.Step
     private RealmList<Step> mStepData;
     private long recipeId;
     private Context context;
+    private StepAdapter.OnItemClickListener mListener;
 
     private static int INTRO_ID = 0;
 
-    public StepAdapter(RealmList<Step> data, boolean autoUpdate) {
+    public interface OnItemClickListener{
+        void onItemClick(int stepId);
+    }
+
+    public StepAdapter(RealmList<Step> data, boolean autoUpdate, OnItemClickListener listener) {
         super(data, autoUpdate);
+        this.mListener = listener;
         this.mStepData = data;
         if(mStepData.size() > 0){
             Log.v("TAG", "YEY");
@@ -80,7 +87,7 @@ public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.Step
      * - Initializes the view and sets the value as well as implements the onclick functions
      *
      */
-    public class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class StepViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.recipe_card)
         CardView recipeCard;
@@ -90,23 +97,15 @@ public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.Step
         public StepViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            recipeCard.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onItemClick(getAdapterPosition());
+                }
+            });
         }
 
-        @Override
-        public void onClick(View v) {
-            // Add this
-            Step step = mStepData.get(getAdapterPosition());
-            //Toast.makeText(context, "Recipe clicked!" + step.getDescription().toString(), Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(context, StepActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putInt(context.getString(R.string.param_step_id), step.getId());
-            bundle.putLong(context.getString(R.string.param_recipe_id), recipeId);
-            intent.putExtras(bundle);
-
-            context.startActivity(intent);
-        }
     }
 
 

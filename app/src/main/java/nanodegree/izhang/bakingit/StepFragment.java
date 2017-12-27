@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,15 +44,6 @@ import io.realm.Realm;
 import nanodegree.izhang.bakingit.Model.Recipe;
 import nanodegree.izhang.bakingit.Model.Step;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link StepFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link StepFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class StepFragment extends Fragment {
     private static final String ARG_PARAM1 = "stepId";
     private static final String ARG_PARAM2 = "recipeId";
@@ -141,8 +133,8 @@ public class StepFragment extends Fragment {
                 SimpleExoPlayerView exoPlayer = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer_video);
                 exoPlayer.setVisibility(View.GONE);
             }else{
-                // Setup ExoPlayer
-                initStepVideo(view);
+                // Setup ExoPlayer if it has not already been setup
+                if(player == null) initStepVideo(view);
             }
 
             // Set the description text
@@ -163,7 +155,7 @@ public class StepFragment extends Fragment {
                 });
             }else{
                 // Setup ExoPlayer
-                initStepVideo(view);
+                if(player == null) initStepVideo(view);
             }
         }
 
@@ -262,6 +254,10 @@ public class StepFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if(player != null){
+            player.release();
+            player = null;
+        }
     }
 
     public interface OnFragmentInteractionListener {
@@ -271,28 +267,25 @@ public class StepFragment extends Fragment {
     /** Lifecycle **/
     /*************************************************************************************************/
 
+    // onResume make sure the player is ready to go
     @Override
     public void onResume() {
         super.onResume();
-        if(player != null){
-            initStepVideo(getView());
-        }
+        Log.v(TAG, "onResume");
     }
 
     @Override
     public void onPause() {
         super.onPause();
         if(player != null) {
-            player.stop();
+            player.release();
+            Log.v(TAG, "onPause");
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (player != null) {
-            player.release();
-        }
     }
 
 }
