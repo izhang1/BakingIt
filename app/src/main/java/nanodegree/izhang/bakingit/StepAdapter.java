@@ -89,10 +89,8 @@ public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.Step
      */
     public class StepViewHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R.id.recipe_card)
-        CardView recipeCard;
-        @BindView(R.id.tv_recipe_name)
-        TextView textView;
+        @BindView(R.id.recipe_card) CardView recipeCard;
+        @BindView(R.id.tv_recipe_name) TextView textView;
 
         public StepViewHolder(View itemView) {
             super(itemView);

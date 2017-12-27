@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,14 +23,10 @@ import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
@@ -50,7 +45,6 @@ public class StepFragment extends Fragment {
     private static final int INVALID_ID = -1;
     private static final String TAG = "StepFragment";
 
-
     private int stepId;
     private long recipeId;
 
@@ -59,8 +53,8 @@ public class StepFragment extends Fragment {
     private boolean hasNextStep = false;
 
     // Used for Exoplayer
-    private SimpleExoPlayerView simpleExoPlayerView;
-    private SimpleExoPlayer player;
+    private SimpleExoPlayerView mExoPlayer;
+    private SimpleExoPlayer mVidPlayer;
 
     @BindView(R.id.tv_description) TextView tvDescription;
     @Nullable @BindView(R.id.button_nextstep) Button btnNext;
@@ -134,7 +128,7 @@ public class StepFragment extends Fragment {
                 exoPlayer.setVisibility(View.GONE);
             }else{
                 // Setup ExoPlayer if it has not already been setup
-                if(player == null) initStepVideo(view);
+                if(mVidPlayer == null) initializeVideo(view);
             }
 
             // Set the description text
@@ -155,45 +149,42 @@ public class StepFragment extends Fragment {
                 });
             }else{
                 // Setup ExoPlayer
-                if(player == null) initStepVideo(view);
+                if(mVidPlayer == null) initializeVideo(view);
             }
         }
 
         return view;
     }
 
-    public void initStepVideo(View view){
+    public void initializeVideo(View view){
 
         // 1. Create a default TrackSelector
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+        TrackSelector selector = new DefaultTrackSelector();
 
         // 2. Create a default LoadControl
         LoadControl loadControl = new DefaultLoadControl();
-        player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
-        simpleExoPlayerView = new SimpleExoPlayerView(getContext());
-        simpleExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer_video);
+        mVidPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), selector, loadControl);
+        mExoPlayer = new SimpleExoPlayerView(getContext());
+        mExoPlayer = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer_video);
 
-        //Set media controller
-        simpleExoPlayerView.setUseController(true);
-        simpleExoPlayerView.requestFocus();
+        // Set media controller and put it in focus
+        mExoPlayer.setUseController(true);
+        mExoPlayer.requestFocus();
 
         // Bind the player to the view.
-        simpleExoPlayerView.setPlayer(player);
+        mExoPlayer.setPlayer(mVidPlayer);
 
         // Step video
         Uri mp4VideoUri =Uri.parse(mStep.getVideoUrl());
 
-        //Produces DataSource instances through which media data is loaded.
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "exoplayer2example"), null);
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
         MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, dataSourceFactory, extractorsFactory, null, null);
 
-        player.prepare(videoSource);
+        mVidPlayer.prepare(videoSource);
 
-        player.addListener(new ExoPlayer.EventListener() {
+        mVidPlayer.addListener(new ExoPlayer.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest) {
                 Log.v(TAG, "Listener-onTimelineChanged...");
@@ -218,8 +209,8 @@ public class StepFragment extends Fragment {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 Log.v(TAG, "Listener-onPlayerError...");
-                player.stop();
-                player.setPlayWhenReady(true);
+                mVidPlayer.stop();
+                mVidPlayer.setPlayWhenReady(true);
             }
 
             @Override
@@ -230,7 +221,7 @@ public class StepFragment extends Fragment {
 
         });
 
-        player.setPlayWhenReady(true);
+        mVidPlayer.setPlayWhenReady(true);
     }
 
     public void onButtonPressed() {
@@ -254,9 +245,9 @@ public class StepFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        if(player != null){
-            player.release();
-            player = null;
+        if(mVidPlayer != null){
+            mVidPlayer.release();
+            mVidPlayer = null;
         }
     }
 
@@ -271,21 +262,18 @@ public class StepFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.v(TAG, "onResume");
+        if(!mStep.getVideoUrl().isEmpty() || mStep.getVideoUrl() != null){
+            if(mVidPlayer == null) initializeVideo(getView());
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(player != null) {
-            player.release();
+        if(mVidPlayer != null) {
+            mVidPlayer.release();
+            mVidPlayer = null;
             Log.v(TAG, "onPause");
         }
     }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
 }

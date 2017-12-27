@@ -93,5 +93,4 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
         }
     }
 
-
 }

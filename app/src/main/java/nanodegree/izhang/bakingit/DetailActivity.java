@@ -29,15 +29,15 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
+        // Gets the data passed in by the intent
         mRecipeId = getIntent().getLongExtra(getString(R.string.passed_recipe_id), -1);
-
-        // TODO: Put in the if statement to check for dual screen
 
         // Added this in so that fragments won't overlap when rotating from landscape to portrait mode
         if (savedInstanceState != null) {
             return;
         }
 
+        // Checks if the table layout is there. Populates the view accordingly.
         if(tabletView == null){
             mFragMgr = getSupportFragmentManager();
             RecipeFragment recipeFragment = RecipeFragment.newInstance(mRecipeId);
@@ -58,13 +58,14 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
         }
 
 
-
     }
 
+    // Overrides the recipe adapter when a user clicks on a step
     @Override
     public void onStepItemClick(int stepId) {
         if(tabletView != null){
             StepFragment stepFragment = StepFragment.newInstance(stepId, mRecipeId);
+            if(mFragMgr == null) mFragMgr = getSupportFragmentManager();
             mFragMgr.beginTransaction()
                     .replace(R.id.step_fragment, stepFragment)
                     .commit();
@@ -79,8 +80,10 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
         }
     }
 
+    // Overrides the next step button on the step fragment
     @Override
     public void onNextStepClicked(int nextStepId) {
+        if(mFragMgr == null) mFragMgr = getSupportFragmentManager();
         StepFragment stepFragment = StepFragment.newInstance(nextStepId, mRecipeId);
         mFragMgr.beginTransaction()
                 .replace(R.id.step_fragment, stepFragment)

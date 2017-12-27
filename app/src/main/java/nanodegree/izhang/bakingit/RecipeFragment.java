@@ -40,6 +40,7 @@ public class RecipeFragment extends Fragment implements StepAdapter.OnItemClickL
 
     @BindView(R.id.tv_serving_size) TextView tv_servingsize;
     @BindView(R.id.rv_ingredient_list) RecyclerView list_ingredients;
+    @BindView(R.id.rv_step_list) RecyclerView list_steps;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -97,16 +98,12 @@ public class RecipeFragment extends Fragment implements StepAdapter.OnItemClickL
         IngredientAdapter ingredientAdapter = new IngredientAdapter(ingredientList);
         list_ingredients.setAdapter(ingredientAdapter);
 
-
         // Step RecyclerView
-        RecyclerView list_steps = (RecyclerView) view.findViewById(R.id.rv_step_list);
         list_steps.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
         List<Step> stepList = mRecipe.getStepList();
         StepAdapter stepAdapter = new StepAdapter((RealmList)stepList, false, this);
         stepAdapter.setRecipeId(mRecipeId);
         list_steps.setAdapter(stepAdapter);
-
 
         return view;
     }
@@ -135,7 +132,6 @@ public class RecipeFragment extends Fragment implements StepAdapter.OnItemClickL
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onStepItemClick(int stepId);
     }
 }

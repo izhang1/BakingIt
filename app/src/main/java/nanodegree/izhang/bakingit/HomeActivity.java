@@ -34,7 +34,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         ButterKnife.bind(this);
 
         // Init Realm
@@ -63,7 +62,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void loadRecyclerViewRecipeData(){
-        // Realm Test code
         Realm realm = Realm.getDefaultInstance();
         RealmResults<Recipe> recipes = realm.where(Recipe.class).findAll();
 

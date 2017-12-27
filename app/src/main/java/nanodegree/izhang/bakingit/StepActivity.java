@@ -24,23 +24,24 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step);
 
+        // Gets the passed in data
         stepId = getIntent().getIntExtra(getString(R.string.param_step_id), INVALID_ID);
         recipeId = getIntent().getLongExtra(getString(R.string.param_recipe_id), INVALID_ID);
+
+        // Stop the activity if there's no data being passed in
+        if(stepId == INVALID_ID || recipeId == INVALID_ID) finish();
 
         mFragMgr = getSupportFragmentManager();
         StepFragment recipeFragment = StepFragment.newInstance(stepId, recipeId);
         mFragMgr.beginTransaction()
                 .replace(R.id.fragment_step, recipeFragment)
                 .commit();
-
-
     }
 
     @Override
     public void onNextStepClicked(int nextStepId) {
-        Log.v("StepActivity", "Clicked : " + nextStepId);
+        if(mFragMgr == null) mFragMgr = getSupportFragmentManager();
         StepFragment recipeFragment = StepFragment.newInstance(nextStepId, recipeId);
-
         mFragMgr.beginTransaction()
                 .replace(R.id.fragment_step, recipeFragment)
                 .commit();
