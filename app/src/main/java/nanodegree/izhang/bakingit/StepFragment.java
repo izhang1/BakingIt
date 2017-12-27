@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,18 +15,14 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.LoopingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
@@ -38,12 +33,12 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
+
+import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.realm.Realm;
 import nanodegree.izhang.bakingit.Model.Recipe;
 import nanodegree.izhang.bakingit.Model.Step;
@@ -57,16 +52,13 @@ import nanodegree.izhang.bakingit.Model.Step;
  * Use the {@link StepFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StepFragment extends Fragment implements VideoRendererEventListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class StepFragment extends Fragment {
     private static final String ARG_PARAM1 = "stepId";
     private static final String ARG_PARAM2 = "recipeId";
     private static final int INVALID_ID = -1;
     private static final String TAG = "StepFragment";
 
 
-    // TODO: Rename and change types of parameters
     private int stepId;
     private long recipeId;
 
@@ -79,7 +71,8 @@ public class StepFragment extends Fragment implements VideoRendererEventListener
     private SimpleExoPlayer player;
 
     @BindView(R.id.tv_description) TextView tvDescription;
-    @BindView(R.id.button_nextstep) Button btnNext;
+    @Nullable @BindView(R.id.button_nextstep) Button btnNext;
+    @Nullable @BindView(R.id.button_next_land) Button btnNextLand;
 
     private OnFragmentInteractionListener mListener;
 
@@ -126,25 +119,59 @@ public class StepFragment extends Fragment implements VideoRendererEventListener
             mStep = mRecipe.getStepList().get(stepId);
         }
 
-        // Check if another value is available. If size is less than the current step
-        if(mRecipe.getStepList().size() > (stepId + 1)){
-            hasNextStep = true;
-            btnNext.setVisibility(View.VISIBLE);
-            btnNext.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onButtonPressed();
-                }
-            });
+        // Set title to short description name
+        getActivity().setTitle(mStep.getShortDescription());
+
+        // Null means that the layout is landscape. Not null means the layout is portrait.
+        if(btnNext != null){
+            // Check if another value is available. If size is less than the current step
+            if(mRecipe.getStepList().size() > (stepId + 1)){
+                hasNextStep = true;
+                btnNext.setVisibility(View.VISIBLE);
+                btnNext.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onButtonPressed();
+                    }
+                });
+            }
+
+            // Check if ExoPlayer is available and hide if not
+            if(mStep.getVideoUrl().isEmpty() || mStep.getVideoUrl() == null){
+                SimpleExoPlayerView exoPlayer = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer_video);
+                exoPlayer.setVisibility(View.GONE);
+            }else{
+                // Setup ExoPlayer
+                initStepVideo(view);
+            }
+
+            // Set the description text
+            tvDescription.setText(mStep.getDescription());
+
+        }else{
+            // Check if ExoPlayer is available and hide if not
+            if(mStep.getVideoUrl().isEmpty() || mStep.getVideoUrl() == null){
+                SimpleExoPlayerView exoPlayer = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer_video);
+                exoPlayer.setVisibility(View.GONE);
+                btnNextLand.setVisibility(View.VISIBLE);
+                tvDescription.setText(mStep.getDescription());
+                btnNextLand.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onButtonPressed();
+                    }
+                });
+            }else{
+                // Setup ExoPlayer
+                initStepVideo(view);
+            }
         }
 
-        // Check if ExoPlayer is available and hide if not
-        if(mStep.getVideoUrl().isEmpty() || mStep.getVideoUrl() == null){
-            SimpleExoPlayerView exoPlayer = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer_video);
-            exoPlayer.setVisibility(View.GONE);
-        }
+        return view;
+    }
 
-        // Setup ExoPlayer
+    public void initStepVideo(View view){
+
         // 1. Create a default TrackSelector
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
@@ -152,8 +179,6 @@ public class StepFragment extends Fragment implements VideoRendererEventListener
 
         // 2. Create a default LoadControl
         LoadControl loadControl = new DefaultLoadControl();
-
-        // 3. Create the player
         player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
         simpleExoPlayerView = new SimpleExoPlayerView(getContext());
         simpleExoPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer_video);
@@ -165,16 +190,16 @@ public class StepFragment extends Fragment implements VideoRendererEventListener
         // Bind the player to the view.
         simpleExoPlayerView.setPlayer(player);
 
-        Uri mp4VideoUri =Uri.parse(mStep.getVideoUrl()); //Radnom 540p indian channel
+        // Step video
+        Uri mp4VideoUri =Uri.parse(mStep.getVideoUrl());
 
         //Produces DataSource instances through which media data is loaded.
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "exoplayer2example"), null);
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
         MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, dataSourceFactory, extractorsFactory, null, null);
-        final LoopingMediaSource loopingSource = new LoopingMediaSource(videoSource);
 
-        player.prepare(loopingSource);
+        player.prepare(videoSource);
 
         player.addListener(new ExoPlayer.EventListener() {
             @Override
@@ -202,7 +227,6 @@ public class StepFragment extends Fragment implements VideoRendererEventListener
             public void onPlayerError(ExoPlaybackException error) {
                 Log.v(TAG, "Listener-onPlayerError...");
                 player.stop();
-                player.prepare(loopingSource);
                 player.setPlayWhenReady(true);
             }
 
@@ -214,18 +238,7 @@ public class StepFragment extends Fragment implements VideoRendererEventListener
 
         });
 
-        player.setPlayWhenReady(true); //run file/link when ready to play.
-        player.setVideoDebugListener(this); //for listening to resolution change and  outputing the resolution
-
-
-
-        // Set title to short description name
-        getActivity().setTitle(mStep.getShortDescription());
-
-        // Set the description text
-        tvDescription.setText(mStep.getDescription());
-
-        return view;
+        player.setPlayWhenReady(true);
     }
 
     public void onButtonPressed() {
@@ -251,54 +264,35 @@ public class StepFragment extends Fragment implements VideoRendererEventListener
         mListener = null;
     }
 
-    @Override
-    public void onVideoEnabled(DecoderCounters counters) {
-
-    }
-
-    @Override
-    public void onVideoDecoderInitialized(String decoderName, long initializedTimestampMs, long initializationDurationMs) {
-
-    }
-
-    @Override
-    public void onVideoInputFormatChanged(Format format) {
-
-    }
-
-    @Override
-    public void onDroppedFrames(int count, long elapsedMs) {
-
-    }
-
-    @Override
-    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-
-    }
-
-    @Override
-    public void onRenderedFirstFrame(Surface surface) {
-
-    }
-
-    @Override
-    public void onVideoDisabled(DecoderCounters counters) {
-
-    }
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onNextStepClicked(int nextStepId);
     }
+
+    /** Lifecycle **/
+    /*************************************************************************************************/
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(player != null){
+            initStepVideo(getView());
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(player != null) {
+            player.stop();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (player != null) {
+            player.release();
+        }
+    }
+
 }

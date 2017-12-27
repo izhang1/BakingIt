@@ -20,6 +20,11 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
 
         // TODO: Put in the if statement to check for dual screen
 
+        // Added this in so that fragments won't overlap when rotating from landscape to portrait mode
+        if (savedInstanceState != null) {
+            return;
+        }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         RecipeFragment recipeFragment = RecipeFragment.newInstance(recipeId);
         fragmentManager.beginTransaction()

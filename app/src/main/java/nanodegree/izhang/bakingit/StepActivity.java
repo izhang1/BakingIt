@@ -40,6 +40,7 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnFr
     public void onNextStepClicked(int nextStepId) {
         Log.v("StepActivity", "Clicked : " + nextStepId);
         StepFragment recipeFragment = StepFragment.newInstance(nextStepId, recipeId);
+
         mFragMgr.beginTransaction()
                 .replace(R.id.fragment_step, recipeFragment)
                 .commit();
