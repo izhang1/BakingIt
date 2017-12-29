@@ -40,22 +40,19 @@ public class IngredientProvider implements RemoteViewsService.RemoteViewsFactory
     public void onCreate() {
         Log.v(TAG, "On Create");
         long recipeId = getCurrentSavedRecipe();
-        recipeId = 1; // todo test - need to remove
+
         // Check if the recipeID is valid or not
-        Realm.init(mContext);
-        Realm realm = Realm.getDefaultInstance();
-        Recipe recipe = realm.where(Recipe.class).equalTo(mContext.getString(R.string.id), recipeId).findFirst();
-        mRecipeName = recipe.getName();
-        mIngredients = new ArrayList<>();
-        for(Ingredient ingredient : recipe.getIngredientList()){
-            mIngredients.add(ingredient.toString());
+        if(recipeId != INVALID_RECIPE_ID){
+            Realm.init(mContext);
+            Realm realm = Realm.getDefaultInstance();
+            Recipe recipe = realm.where(Recipe.class).equalTo(mContext.getString(R.string.id), recipeId).findFirst();
+            mRecipeName = recipe.getName();
+            mIngredients = new ArrayList<>();
+            for(Ingredient ingredient : recipe.getIngredientList()){
+                mIngredients.add(ingredient.toString());
+            }
         }
 
-        //        if(recipeId != INVALID_RECIPE_ID){
-        //
-        //        }
-
-        // Return the provider with the listview
     }
 
     public long getCurrentSavedRecipe(){
