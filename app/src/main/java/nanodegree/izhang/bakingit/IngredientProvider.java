@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -28,17 +29,26 @@ public class IngredientProvider implements RemoteViewsService.RemoteViewsFactory
     private Intent mIntent;
     private ArrayList<String> mIngredients;
     private String mRecipeName;
+    private int mAppWidgetId;
 
     public IngredientProvider(Context context, Intent intent){
-        Log.v(TAG, "Constructor");
-
         this.mContext = context;
         this.mIntent = intent;
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            mAppWidgetId = extras.getInt(
+                    AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID);
+        }
     }
 
     @Override
     public void onCreate() {
         Log.v(TAG, "On Create");
+        getRecipeData();
+    }
+
+    private void getRecipeData(){
         long recipeId = getCurrentSavedRecipe();
 
         // Check if the recipeID is valid or not
@@ -52,18 +62,20 @@ public class IngredientProvider implements RemoteViewsService.RemoteViewsFactory
                 mIngredients.add(ingredient.toString());
             }
         }
-
     }
 
     public long getCurrentSavedRecipe(){
-        SharedPreferences savedRecipe = mContext.getSharedPreferences(mContext.getApplicationContext().getString(R.string.widget_pref), 0);
+        SharedPreferences savedRecipe = mContext.getSharedPreferences(mContext.getApplicationContext().getString(R.string.widget_pref_key), Context.MODE_PRIVATE);
         long recipeId = savedRecipe.getLong(mContext.getApplicationContext().getString(R.string.widget_recipe_id), INVALID_RECIPE_ID);
+        Log.v(TAG, "recipeID: " + recipeId);
+
         return recipeId;
     }
 
     @Override
     public void onDataSetChanged() {
-
+        Log.v(TAG, "onDataSetChanged");
+        getRecipeData();
     }
 
     @Override
@@ -93,6 +105,8 @@ public class IngredientProvider implements RemoteViewsService.RemoteViewsFactory
             String ingredient = mIngredients.get(position);
             remoteView.setTextViewText(R.id.tv_recipe_name, ingredient);
         }
+
+        remoteView.setTextColor(R.id.tv_recipe_name, mContext.getColor(R.color.cardview_light_background));
 
         return remoteView;
     }

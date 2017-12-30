@@ -12,7 +12,6 @@ public class RecipeService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        Log.v("RECIPE_SERVICE", "onGetViewFactory");
 
         return (new IngredientProvider(this.getApplicationContext(), intent));
     }

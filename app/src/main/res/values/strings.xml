@@ -14,7 +14,7 @@
     <string name="id">id</string>
 
     <!-- App Widget -->
-    <string name="widget_pref">WIDGET_PREF</string>
+    <string name="widget_pref_key">nanodegree.izhang.bakingit.prefkey</string>
     <string name="widget_recipe_id">WIDGET_RECIPE_ID</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>

@@ -1,7 +1,10 @@
 package nanodegree.izhang.bakingit;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
@@ -32,10 +35,23 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
 
     private RealmResults<Recipe> mRecipeData;
     private Context context;
+    private OnItemLongClickListener mOnItemLongClickListener;
+    private OnItemClickListener mOnItemCLickListner;
+
+    public interface OnItemClickListener {
+        public void onItemClicked(int position);
+    }
+
+    public interface OnItemLongClickListener {
+        public boolean onItemLongClicked(int position);
+    }
 
     public RecipeAdapter(RealmResults<Recipe> data, boolean autoUpdate) {
         super(data, autoUpdate);
         this.mRecipeData = data;
+        //this.mOnItemLongClickListener = onItemLongClickListener;
+        //his.mOnItemCLickListner = onItemClickListener;
+
     }
 
     public void setData(RealmResults<Recipe> data){
@@ -69,7 +85,7 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
      * - Initializes the view and sets the value as well as implements the onclick functions
      *
      */
-    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 
         @BindView(R.id.recipe_card) CardView recipeCard;
         @BindView(R.id.tv_recipe_name) TextView textView;
@@ -78,10 +94,12 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
             super(itemView);
             ButterKnife.bind(this, itemView);
             recipeCard.setOnClickListener(this);
+            recipeCard.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+
             // Add this
             Recipe recipe = mRecipeData.get(getAdapterPosition());
 
@@ -90,6 +108,30 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
             intent.putExtra(context.getString(R.string.passed_recipe_id), recipe.getId());
             context.startActivity(intent);
 
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            Log.v("onLongClick", " Called");
+
+            // Gather and save the data
+            Recipe recipe = mRecipeData.get(getAdapterPosition());
+            SharedPreferences preferences = context.getSharedPreferences(context.getApplicationContext().getString(R.string.widget_pref_key), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putLong(context.getApplicationContext().getString(R.string.widget_recipe_id), recipe.getId());
+            editor.commit();
+
+            // Sent the intent and update widget
+            AppWidgetManager widgetMgr = AppWidgetManager.getInstance(context);
+            int widgetIds[] = widgetMgr.getAppWidgetIds(
+                    new ComponentName(context, RecipeWidget.class));
+            widgetMgr.notifyAppWidgetViewDataChanged(widgetIds, R.id.list_ingredients);
+
+
+            // Toasts to notify user
+            Toast.makeText(context, "Widget changed to show recipe: " + recipe.getName(), Toast.LENGTH_SHORT).show();
+
+            return true;
         }
     }
 
