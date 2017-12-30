@@ -1,15 +1,8 @@
 package nanodegree.izhang.bakingit;
 
-import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-
-import io.realm.Realm;
-import io.realm.RealmResults;
-import nanodegree.izhang.bakingit.Model.Recipe;
-import nanodegree.izhang.bakingit.Model.Step;
 
 public class StepActivity extends AppCompatActivity implements StepFragment.OnFragmentInteractionListener {
 

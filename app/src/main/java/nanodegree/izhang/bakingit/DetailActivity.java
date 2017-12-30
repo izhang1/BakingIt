@@ -1,19 +1,15 @@
 package nanodegree.izhang.bakingit;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
-import nanodegree.izhang.bakingit.Model.Recipe;
 
 public class DetailActivity extends AppCompatActivity implements RecipeFragment.OnFragmentInteractionListener, StepFragment.OnFragmentInteractionListener{
 

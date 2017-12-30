@@ -9,7 +9,6 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import io.realm.Realm;
@@ -45,7 +44,6 @@ public class IngredientProvider implements RemoteViewsService.RemoteViewsFactory
 
     @Override
     public void onCreate() {
-        Log.v(TAG, "On Create");
         getRecipeData();
     }
 
@@ -68,14 +66,12 @@ public class IngredientProvider implements RemoteViewsService.RemoteViewsFactory
     public long getCurrentSavedRecipe(){
         SharedPreferences savedRecipe = mContext.getSharedPreferences(mContext.getApplicationContext().getString(R.string.widget_pref_key), Context.MODE_PRIVATE);
         long recipeId = savedRecipe.getLong(mContext.getApplicationContext().getString(R.string.widget_recipe_id), INVALID_RECIPE_ID);
-        Log.v(TAG, "recipeID: " + recipeId);
 
         return recipeId;
     }
 
     @Override
     public void onDataSetChanged() {
-        Log.v(TAG, "onDataSetChanged");
         getRecipeData();
     }
 

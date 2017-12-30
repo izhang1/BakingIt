@@ -1,24 +1,17 @@
 package nanodegree.izhang.bakingit;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.RealmList;
 import io.realm.RealmRecyclerViewAdapter;
-import io.realm.RealmResults;
-import nanodegree.izhang.bakingit.Model.Recipe;
 import nanodegree.izhang.bakingit.Model.Step;
 
 /**
@@ -42,9 +35,6 @@ public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.Step
         super(data, autoUpdate);
         this.mListener = listener;
         this.mStepData = data;
-        if(mStepData.size() > 0){
-            Log.v("TAG", "YEY");
-        }
     }
 
     public void setRecipeId(long recipeId){

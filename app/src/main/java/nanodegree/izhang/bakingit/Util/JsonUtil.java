@@ -96,7 +96,6 @@ public class JsonUtil {
                 JSONObject tempObj = (JSONObject) stepsArr.get(h);
                 // id, short desc, desc, video, thumbnail
 
-
                 Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
                 Step step = realm.createObject(Step.class);
@@ -125,13 +124,9 @@ public class JsonUtil {
 
             realm.commitTransaction();
 
-
-            Log.v("JSON Util", "Recipe: " + recipe.toString());
-
             recipeList.add(recipe);
 
         }
-
         return recipeList;
     }
 

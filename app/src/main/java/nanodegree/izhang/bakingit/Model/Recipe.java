@@ -20,7 +20,7 @@ public class Recipe extends RealmObject {
     private int servings;
     private String image;
 
-    public Recipe(){};
+    public Recipe(){}
 
     public Recipe(int id, String name, RealmList<Ingredient> ingredientList, RealmList<Step> stepList, int servings, String image) {
         this.id = id;

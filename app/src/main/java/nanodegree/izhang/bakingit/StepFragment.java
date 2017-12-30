@@ -43,7 +43,6 @@ public class StepFragment extends Fragment {
     private static final String ARG_PARAM1 = "stepId";
     private static final String ARG_PARAM2 = "recipeId";
     private static final int INVALID_ID = -1;
-    private static final String TAG = "StepFragment";
 
     private int stepId;
     private long recipeId;
@@ -187,35 +186,29 @@ public class StepFragment extends Fragment {
         mVidPlayer.addListener(new ExoPlayer.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest) {
-                Log.v(TAG, "Listener-onTimelineChanged...");
             }
 
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                Log.v(TAG, "Listener-onTracksChanged...");
             }
 
             @Override
             public void onLoadingChanged(boolean isLoading) {
-                Log.v(TAG, "Listener-onLoadingChanged...isLoading:"+isLoading);
             }
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                Log.v(TAG, "Listener-onPlayerStateChanged..." + playbackState);
             }
 
 
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                Log.v(TAG, "Listener-onPlayerError...");
                 mVidPlayer.stop();
                 mVidPlayer.setPlayWhenReady(true);
             }
 
             @Override
             public void onPositionDiscontinuity() {
-                Log.v(TAG, "Listener-onPositionDiscontinuity...");
             }
 
 
@@ -257,8 +250,7 @@ public class StepFragment extends Fragment {
 
     /** Lifecycle **/
     /*************************************************************************************************/
-
-    // onResume make sure the player is ready to go
+    // onResume init the video if there is a video URL
     @Override
     public void onResume() {
         super.onResume();
@@ -273,7 +265,6 @@ public class StepFragment extends Fragment {
         if(mVidPlayer != null) {
             mVidPlayer.release();
             mVidPlayer = null;
-            Log.v(TAG, "onPause");
         }
     }
 }

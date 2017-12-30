@@ -1,7 +1,5 @@
 package nanodegree.izhang.bakingit.Model;
 
-import java.io.Serializable;
-
 import io.realm.RealmObject;
 
 /**
@@ -17,7 +15,7 @@ public class Ingredient extends RealmObject {
     private String measure;
     private String ingredients;
 
-    public Ingredient(){};
+    public Ingredient(){}
 
     public Ingredient(int quantity, String measure, String ingredients){
         this.quantity = quantity;

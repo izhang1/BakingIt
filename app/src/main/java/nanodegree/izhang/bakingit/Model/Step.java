@@ -1,7 +1,5 @@
 package nanodegree.izhang.bakingit.Model;
 
-import java.io.Serializable;
-
 import io.realm.RealmObject;
 
 /**
@@ -18,7 +16,7 @@ public class Step extends RealmObject{
     private String videoUrl;
     private String thumbnailUrl;
 
-    public Step(){};
+    public Step(){}
 
     public Step(int id, String shortDescription, String description, String videoUrl, String thumbnailUrl){
         this.id = id;

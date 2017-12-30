@@ -5,27 +5,20 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.OrderedRealmCollection;
-import io.realm.Realm;
-import io.realm.RealmBaseAdapter;
 import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
 import nanodegree.izhang.bakingit.Model.Recipe;
+import nanodegree.izhang.bakingit.Widget.RecipeWidget;
 
 /**
  * Created by ivanzhang on 11/5/17.
@@ -35,23 +28,10 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
 
     private RealmResults<Recipe> mRecipeData;
     private Context context;
-    private OnItemLongClickListener mOnItemLongClickListener;
-    private OnItemClickListener mOnItemCLickListner;
-
-    public interface OnItemClickListener {
-        public void onItemClicked(int position);
-    }
-
-    public interface OnItemLongClickListener {
-        public boolean onItemLongClicked(int position);
-    }
 
     public RecipeAdapter(RealmResults<Recipe> data, boolean autoUpdate) {
         super(data, autoUpdate);
         this.mRecipeData = data;
-        //this.mOnItemLongClickListener = onItemLongClickListener;
-        //his.mOnItemCLickListner = onItemClickListener;
-
     }
 
     public void setData(RealmResults<Recipe> data){
@@ -100,7 +80,6 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
         @Override
         public void onClick(View v) {
 
-            // Add this
             Recipe recipe = mRecipeData.get(getAdapterPosition());
 
             // Passing the recipe data and starting the bundle
@@ -112,7 +91,6 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
 
         @Override
         public boolean onLongClick(View v) {
-            Log.v("onLongClick", " Called");
 
             // Gather and save the data
             Recipe recipe = mRecipeData.get(getAdapterPosition());
@@ -126,7 +104,6 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
             int widgetIds[] = widgetMgr.getAppWidgetIds(
                     new ComponentName(context, RecipeWidget.class));
             widgetMgr.notifyAppWidgetViewDataChanged(widgetIds, R.id.list_ingredients);
-
 
             // Toasts to notify user
             Toast.makeText(context, "Widget changed to show recipe: " + recipe.getName(), Toast.LENGTH_SHORT).show();
