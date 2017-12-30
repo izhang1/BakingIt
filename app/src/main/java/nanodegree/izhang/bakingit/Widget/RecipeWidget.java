@@ -1,21 +1,15 @@
-package nanodegree.izhang.bakingit;
+package nanodegree.izhang.bakingit.Widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ListView;
 import android.widget.RemoteViews;
 
-import java.util.ArrayList;
-
-import io.realm.Realm;
-import nanodegree.izhang.bakingit.Model.Ingredient;
-import nanodegree.izhang.bakingit.Model.Recipe;
+import nanodegree.izhang.bakingit.R;
+import nanodegree.izhang.bakingit.RecipeService;
 
 /**
  * Implementation of App Widget functionality.

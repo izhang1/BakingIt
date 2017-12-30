@@ -1,4 +1,4 @@
-package nanodegree.izhang.bakingit;
+package nanodegree.izhang.bakingit.Widget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import io.realm.Realm;
 import nanodegree.izhang.bakingit.Model.Ingredient;
 import nanodegree.izhang.bakingit.Model.Recipe;
+import nanodegree.izhang.bakingit.R;
 
 /**
  * Created by ivanzhang on 12/28/17.
