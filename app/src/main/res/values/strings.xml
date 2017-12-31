@@ -21,5 +21,10 @@
 
     <!-- UI View Text -->
     <string name="btn_nextstep_label">Next Step</string>
+    <string name="tv_recipe_label">Recipe:</string>
+    <string name="tv_ingred_label">Ingredients</string>
+    <string name="tv_steps_label">Steps</string>
+
+
 
 </resources>

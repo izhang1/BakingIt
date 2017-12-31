@@ -85,4 +85,9 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
                 .replace(R.id.step_fragment, stepFragment)
                 .commit();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }

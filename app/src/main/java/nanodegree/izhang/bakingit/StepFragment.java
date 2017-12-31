@@ -3,6 +3,7 @@ package nanodegree.izhang.bakingit;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,7 +72,6 @@ public class StepFragment extends Fragment {
      *
      * @return A new instance of fragment StepFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static StepFragment newInstance(int stepId, long recipeId) {
         StepFragment fragment = new StepFragment();
         Bundle args = new Bundle();
@@ -84,10 +84,12 @@ public class StepFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             stepId = getArguments().getInt(ARG_PARAM1);
             recipeId = getArguments().getLong(ARG_PARAM2);
         }
+
     }
 
     @Override
