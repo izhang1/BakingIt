@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/exoplayer_video"
         android:layout_margin="8dp"
-        android:text="Description"
         android:textSize="18sp" />
 
     <Button
@@ -27,7 +26,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="4dp"
         android:background="@color/colorPrimary"
-        android:text="Next Step"
+        android:text="@string/btn_nextstep_label"
         android:textColor="@android:color/white"
         android:visibility="invisible" />
 
