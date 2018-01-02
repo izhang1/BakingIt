@@ -29,13 +29,13 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class HomeActivityClickTest {
+public class HomeActivityTest {
 
     @Rule
     public ActivityTestRule<HomeActivity> mActivityTestRule = new ActivityTestRule<>(HomeActivity.class);
 
     @Test
-    public void homeActivityClickTest() {
+    public void homeActivityTest() {
         ViewInteraction recyclerView = onView(
                 allOf(withId(R.id.realm_recycler_view),
                         childAtPosition(
@@ -44,26 +44,6 @@ public class HomeActivityClickTest {
         recyclerView.perform(actionOnItemAtPosition(0, click()));
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.tv_recipe_label), withText("Recipe"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.cv_serving_ingredients),
-                                        0),
-                                2),
-                        isDisplayed()));
-        textView2.check(matches(withText("Recipe")));
-
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.tv_step_label), withText("Steps"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.cv_steps),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textView3.check(matches(withText("Steps")));
-
-        ViewInteraction textView4 = onView(
                 allOf(withId(R.id.tv_recipe_name), withText("Recipe Introduction"),
                         childAtPosition(
                                 allOf(withId(R.id.recipe_card),
@@ -72,7 +52,17 @@ public class HomeActivityClickTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView4.check(matches(withText("Recipe Introduction")));
+        textView2.check(matches(withText("Recipe Introduction")));
+
+        ViewInteraction textView3 = onView(
+                allOf(withId(R.id.tv_recipe_name), withText("4 OZ cream cheese(softened)"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.rv_ingredient_list),
+                                        8),
+                                0),
+                        isDisplayed()));
+        textView3.check(matches(withText("4 OZ cream cheese(softened)")));
 
     }
 
