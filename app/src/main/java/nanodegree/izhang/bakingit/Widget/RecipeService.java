@@ -1,4 +1,4 @@
-package nanodegree.izhang.bakingit;
+package nanodegree.izhang.bakingit.Widget;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;
