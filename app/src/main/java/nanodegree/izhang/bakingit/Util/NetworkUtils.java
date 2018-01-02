@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 public final class NetworkUtils {
 
-    private static final String RECIPE_URL = "ENDPOINT_FOR_BAKING_DATA";
+    private static final String RECIPE_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
     /**
      * Builds the URL based on the passed in sort the user wants.
