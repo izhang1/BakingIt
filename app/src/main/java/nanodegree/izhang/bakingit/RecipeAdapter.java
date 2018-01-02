@@ -29,8 +29,8 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
     private RealmResults<Recipe> mRecipeData;
     private Context context;
 
-    public RecipeAdapter(RealmResults<Recipe> data, boolean autoUpdate) {
-        super(data, autoUpdate);
+    public RecipeAdapter(RealmResults<Recipe> data) {
+        super(data, false);
         this.mRecipeData = data;
     }
 
@@ -52,7 +52,7 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
     @Override
     public void onBindViewHolder(RecipeAdapter.RecipeViewHolder holder, int position) {
         Recipe recipe = mRecipeData.get(position);
-        holder.textView.setText(recipe.getName());
+        holder.textView.setText(recipe != null ? recipe.getName() : null);
     }
 
     @Override

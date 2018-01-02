@@ -23,8 +23,7 @@ import nanodegree.izhang.bakingit.Util.NetworkUtils;
 
 public class HomeActivity extends AppCompatActivity {
 
-    ArrayList<Recipe> mData;
-    RecipeAdapter mRecipeAdapter;
+    private RecipeAdapter mRecipeAdapter;
 
     @BindView(R.id.realm_recycler_view) RecyclerView mRecipeRV;
 
@@ -53,14 +52,14 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecipeRV.setLayoutManager(layoutManager);
 
-        mRecipeAdapter = new RecipeAdapter(recipes, false);
+        mRecipeAdapter = new RecipeAdapter(recipes);
 
         mRecipeRV.setAdapter(mRecipeAdapter);
         mRecipeAdapter.setData(recipes);
         mRecipeAdapter.notifyDataSetChanged();
     }
 
-    public void loadRecyclerViewRecipeData(){
+    private void loadRecyclerViewRecipeData(){
         Realm realm = Realm.getDefaultInstance();
         RealmResults<Recipe> recipes = realm.where(Recipe.class).findAll();
 
@@ -77,13 +76,10 @@ public class HomeActivity extends AppCompatActivity {
             URL url = NetworkUtils.buildUrl();
             try {
                 String response = NetworkUtils.getResponseFromHttpUrl(url);
-                Log.v("JSON Response", response);
 
                 data = JsonUtil.getRecipesFromJson(response);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
+            } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
 
@@ -92,7 +88,6 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<Recipe> Recipes) {
-            mData = Recipes;
             loadRecyclerViewRecipeData();
         }
     }

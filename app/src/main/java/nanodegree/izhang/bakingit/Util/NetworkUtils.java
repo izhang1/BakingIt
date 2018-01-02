@@ -1,9 +1,5 @@
 package nanodegree.izhang.bakingit.Util;
 
-/**
- * Created by ivanzhang on 11/2/17.
- */
-
 import android.net.Uri;
 
 import java.io.IOException;

@@ -14,7 +14,6 @@ import butterknife.ButterKnife;
 public class DetailActivity extends AppCompatActivity implements RecipeFragment.OnFragmentInteractionListener, StepFragment.OnFragmentInteractionListener{
 
     @Nullable @BindView(R.id.tablet_layout) View tabletView;
-    private static int INITIAL_STEP_ID = 0;
     private long mRecipeId;
 
     private FragmentManager mFragMgr;
@@ -47,6 +46,7 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
                     .replace(R.id.recipe_fragment, recipeFragment)
                     .commit();
 
+            int INITIAL_STEP_ID = 0;
             StepFragment stepFragment = StepFragment.newInstance(INITIAL_STEP_ID, mRecipeId);
             mFragMgr.beginTransaction()
                     .replace(R.id.step_fragment, stepFragment)
@@ -86,8 +86,4 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
                 .commit();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 }

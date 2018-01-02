@@ -3,9 +3,7 @@ package nanodegree.izhang.bakingit;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,7 +101,7 @@ public class StepFragment extends Fragment {
         if(stepId != INVALID_ID && recipeId != INVALID_ID){
             Realm realm = Realm.getDefaultInstance();
             mRecipe = realm.where(Recipe.class).equalTo(getContext().getString(R.string.id), recipeId).findFirst();
-            mStep = mRecipe.getStepList().get(stepId);
+            mStep = mRecipe != null ? mRecipe.getStepList().get(stepId) : null;
         }
 
         // Set title to short description name
@@ -140,6 +138,7 @@ public class StepFragment extends Fragment {
             if(mStep.getVideoUrl().isEmpty() || mStep.getVideoUrl() == null){
                 SimpleExoPlayerView exoPlayer = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer_video);
                 exoPlayer.setVisibility(View.GONE);
+                assert btnNextLand != null;
                 btnNextLand.setVisibility(View.VISIBLE);
                 tvDescription.setText(mStep.getDescription());
                 btnNextLand.setOnClickListener(new View.OnClickListener() {
@@ -157,7 +156,7 @@ public class StepFragment extends Fragment {
         return view;
     }
 
-    public void initializeVideo(View view){
+    private void initializeVideo(View view){
 
         // 1. Create a default TrackSelector
         TrackSelector selector = new DefaultTrackSelector();
@@ -219,7 +218,7 @@ public class StepFragment extends Fragment {
         mVidPlayer.setPlayWhenReady(true);
     }
 
-    public void onButtonPressed() {
+    private void onButtonPressed() {
         if (mListener != null) {
             mListener.onNextStepClicked((stepId + 1));
         }

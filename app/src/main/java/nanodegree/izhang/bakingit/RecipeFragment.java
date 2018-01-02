@@ -94,7 +94,7 @@ public class RecipeFragment extends Fragment implements StepAdapter.OnItemClickL
         // Step RecyclerView
         list_steps.setLayoutManager(new LinearLayoutManager(view.getContext()));
         List<Step> stepList = mRecipe.getStepList();
-        StepAdapter stepAdapter = new StepAdapter((RealmList)stepList, false, this);
+        StepAdapter stepAdapter = new StepAdapter((RealmList)stepList, this);
         stepAdapter.setRecipeId(mRecipeId);
         list_steps.setAdapter(stepAdapter);
 
@@ -127,4 +127,5 @@ public class RecipeFragment extends Fragment implements StepAdapter.OnItemClickL
     public interface OnFragmentInteractionListener {
         void onStepItemClick(int stepId);
     }
+
 }

@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import nanodegree.izhang.bakingit.R;
@@ -17,8 +16,8 @@ import nanodegree.izhang.bakingit.RecipeService;
 public class RecipeWidget extends AppWidgetProvider {
 
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {// Construct the RemoteViews object
+    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                        int appWidgetId) {// Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
 
         //RemoteViews Service needed to provide adapter for ListView
@@ -30,7 +29,7 @@ public class RecipeWidget extends AppWidgetProvider {
         recipeServiceIntent.setData(Uri.parse(
                 recipeServiceIntent.toUri(Intent.URI_INTENT_SCHEME)));
         //setting adapter to listview of the widget
-        views.setRemoteAdapter(appWidgetId, R.id.list_ingredients, recipeServiceIntent);
+        views.setRemoteAdapter(R.id.list_ingredients, recipeServiceIntent);
         //setting an empty view in case of no data
         views.setEmptyView(R.id.list_ingredients, R.id.tv_norecipe);
 

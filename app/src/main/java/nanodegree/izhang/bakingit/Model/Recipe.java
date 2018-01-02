@@ -1,11 +1,9 @@
 package nanodegree.izhang.bakingit.Model;
 
-import java.io.Serializable;
 import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by ivanzhang on 11/2/17.

@@ -1,6 +1,5 @@
 package nanodegree.izhang.bakingit;
 
-import android.os.PersistableBundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +7,7 @@ import android.util.Log;
 
 public class StepActivity extends AppCompatActivity implements StepFragment.OnFragmentInteractionListener {
 
-    int INVALID_ID = -1;
+    private final int INVALID_ID = -1;
     private FragmentManager mFragMgr;
 
     private long recipeId;

@@ -21,30 +21,24 @@ import nanodegree.izhang.bakingit.Model.Step;
 public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.StepViewHolder> {
 
     private RealmList<Step> mStepData;
-    private long recipeId;
     private Context context;
-    private StepAdapter.OnItemClickListener mListener;
+    private final StepAdapter.OnItemClickListener mListener;
 
-    private static int INTRO_ID = 0;
+    private static final int INTRO_ID = 0;
 
     public interface OnItemClickListener{
         void onItemClick(int stepId);
     }
 
-    public StepAdapter(RealmList<Step> data, boolean autoUpdate, OnItemClickListener listener) {
-        super(data, autoUpdate);
+    public StepAdapter(RealmList<Step> data, OnItemClickListener listener) {
+        super(data, false);
         this.mListener = listener;
         this.mStepData = data;
     }
 
     public void setRecipeId(long recipeId){
-        this.recipeId = recipeId;
     }
 
-
-    public void setData(RealmList<Step> data){
-        this.mStepData = data;
-    }
 
     @Override
     public StepViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {

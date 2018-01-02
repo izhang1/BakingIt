@@ -1,11 +1,5 @@
 package nanodegree.izhang.bakingit.Util;
 
-/**
- * Created by ivanzhang on 11/2/17.
- */
-
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

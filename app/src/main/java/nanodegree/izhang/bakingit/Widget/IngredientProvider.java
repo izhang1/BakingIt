@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -21,12 +20,11 @@ import nanodegree.izhang.bakingit.R;
  */
 
 public class IngredientProvider implements RemoteViewsService.RemoteViewsFactory {
-    private static long INVALID_RECIPE_ID = -1;
-    private static long RECIPE_NAME_POSITION = 0;
-    private static String TAG = "IngredientProvider";
+    private static final long INVALID_RECIPE_ID = -1;
+    private static final long RECIPE_NAME_POSITION = 0;
 
-    private Context mContext;
-    private Intent mIntent;
+    private final Context mContext;
+    private final Intent mIntent;
     private ArrayList<String> mIngredients;
     private String mRecipeName;
     private int mAppWidgetId;
@@ -55,6 +53,7 @@ public class IngredientProvider implements RemoteViewsService.RemoteViewsFactory
             Realm.init(mContext);
             Realm realm = Realm.getDefaultInstance();
             Recipe recipe = realm.where(Recipe.class).equalTo(mContext.getString(R.string.id), recipeId).findFirst();
+            assert recipe != null;
             mRecipeName = recipe.getName();
             mIngredients = new ArrayList<>();
             for(Ingredient ingredient : recipe.getIngredientList()){
@@ -63,11 +62,10 @@ public class IngredientProvider implements RemoteViewsService.RemoteViewsFactory
         }
     }
 
-    public long getCurrentSavedRecipe(){
+    private long getCurrentSavedRecipe(){
         SharedPreferences savedRecipe = mContext.getSharedPreferences(mContext.getApplicationContext().getString(R.string.widget_pref_key), Context.MODE_PRIVATE);
-        long recipeId = savedRecipe.getLong(mContext.getApplicationContext().getString(R.string.widget_recipe_id), INVALID_RECIPE_ID);
 
-        return recipeId;
+        return savedRecipe.getLong(mContext.getApplicationContext().getString(R.string.widget_recipe_id), INVALID_RECIPE_ID);
     }
 
     @Override

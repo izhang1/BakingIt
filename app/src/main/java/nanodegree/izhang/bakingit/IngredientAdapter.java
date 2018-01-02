@@ -19,20 +19,15 @@ import butterknife.ButterKnife;
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
     private ArrayList<String> mData;
-    private Context context;
 
     public IngredientAdapter(ArrayList<String> data) {
         this.mData = data;
     }
 
 
-    public void setData(ArrayList<String> data){
-        this.mData = data;
-    }
-
     @Override
     public IngredientAdapter.IngredientViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        context = viewGroup.getContext();
+        Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.ingredient_item;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
