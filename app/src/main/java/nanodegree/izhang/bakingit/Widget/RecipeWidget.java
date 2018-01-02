@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import nanodegree.izhang.bakingit.R;
-import nanodegree.izhang.bakingit.RecipeService;
 
 /**
  * Implementation of App Widget functionality.

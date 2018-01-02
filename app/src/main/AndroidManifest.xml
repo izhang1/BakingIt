@@ -34,7 +34,7 @@
 
 
         <service
-            android:name="nanodegree.izhang.bakingit.RecipeService"
+            android:name="nanodegree.izhang.bakingit.Widget.RecipeService"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
