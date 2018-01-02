@@ -10,8 +10,12 @@ import java.net.URL;
 import java.util.Scanner;
 
 /**
- * These utilities will be used to communicate with the weather servers.
+ *  Created by ivanzhang on 12/2/17.
+ *
+ * These utilities will be used to communicate with the baking recipe servers.
+ *
  */
+
 public final class NetworkUtils {
 
     private static final String RECIPE_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";

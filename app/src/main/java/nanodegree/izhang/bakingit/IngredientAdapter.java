@@ -14,6 +14,8 @@ import butterknife.ButterKnife;
 
 /**
  * Created by ivanzhang on 12/17/17.
+ * IngredientAdapter
+ *  - Adapter class for ingredients shown on the DetailActivity
  */
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {

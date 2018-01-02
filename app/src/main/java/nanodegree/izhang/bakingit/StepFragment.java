@@ -38,6 +38,13 @@ import io.realm.Realm;
 import nanodegree.izhang.bakingit.Model.Recipe;
 import nanodegree.izhang.bakingit.Model.Step;
 
+/**
+ * Created by ivanzhang on 11/5/17.
+ *
+ *  StepFragment
+ *  - Shows the steps UI with ExoPlayer, Next Button and Description
+ *  - Shows only the ExoPlayer in Horizontal view
+ */
 public class StepFragment extends Fragment {
     private static final String ARG_PARAM1 = "stepId";
     private static final String ARG_PARAM2 = "recipeId";
@@ -64,12 +71,6 @@ public class StepFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment StepFragment.
-     */
     public static StepFragment newInstance(int stepId, long recipeId) {
         StepFragment fragment = new StepFragment();
         Bundle args = new Bundle();
@@ -156,6 +157,7 @@ public class StepFragment extends Fragment {
         return view;
     }
 
+    // Initializes the video components for media playback
     private void initializeVideo(View view){
 
         // 1. Create a default TrackSelector
@@ -177,7 +179,7 @@ public class StepFragment extends Fragment {
         // Step video
         Uri mp4VideoUri =Uri.parse(mStep.getVideoUrl());
 
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "exoplayer2example"), null);
+        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "BakingIt"), null);
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
         MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, dataSourceFactory, extractorsFactory, null, null);

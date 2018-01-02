@@ -5,6 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+/**
+ * Created by ivanzhang on 12/5/17.
+ *
+ *  StepActivity
+ *  - Shows the fragment and implements the onclick for the steps
+ *  - Is not used when in master detail view
+ */
 public class StepActivity extends AppCompatActivity implements StepFragment.OnFragmentInteractionListener {
 
     private final int INVALID_ID = -1;
@@ -21,15 +28,10 @@ public class StepActivity extends AppCompatActivity implements StepFragment.OnFr
         if(savedInstanceState != null){
             recipeId = savedInstanceState.getLong(getString(R.string.param_recipe_id));
             stepId = savedInstanceState.getInt(getString(R.string.param_step_id));
-        }else{
+        }else {
             stepId = getIntent().getIntExtra(getString(R.string.param_step_id), INVALID_ID);
             recipeId = getIntent().getLongExtra(getString(R.string.param_recipe_id), INVALID_ID);
         }
-
-        Log.v("StepActivity", "onCreate");
-        Log.v("StepActivity", "StepId: " + stepId);
-        Log.v("StepActivity", "RecipeId: " + recipeId);
-
 
         // Stop the activity if there's no data being passed in
         if(stepId == INVALID_ID || recipeId == INVALID_ID) finish();

@@ -21,7 +21,13 @@ import nanodegree.izhang.bakingit.Model.Ingredient;
 import nanodegree.izhang.bakingit.Model.Recipe;
 import nanodegree.izhang.bakingit.Model.Step;
 
-
+/**
+ * Created by ivanzhang on 11/5/17.
+ *
+ *  RecipeFragment
+ *  - Recipe class used as a regular fragment covering a while page or the master view
+ *  - Shows and displays the recipe, ingredients, and steps
+ */
 public class RecipeFragment extends Fragment implements StepAdapter.OnItemClickListener{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM = "recipeId";
@@ -39,12 +45,6 @@ public class RecipeFragment extends Fragment implements StepAdapter.OnItemClickL
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment RecipeFragment.
-     */
     public static RecipeFragment newInstance(long recipeId) {
         RecipeFragment fragment = new RecipeFragment();
         Bundle args = new Bundle();

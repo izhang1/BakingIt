@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import org.json.JSONException;
 
@@ -21,6 +20,13 @@ import nanodegree.izhang.bakingit.Model.Recipe;
 import nanodegree.izhang.bakingit.Util.JsonUtil;
 import nanodegree.izhang.bakingit.Util.NetworkUtils;
 
+/**
+ *  Created by ivanzhang on 12/2/17.
+ *
+ *  HomeActivity
+ *  - Shows the recipes and will download them if they are not already saved internally. 
+ *
+ */
 public class HomeActivity extends AppCompatActivity {
 
     private RecipeAdapter mRecipeAdapter;

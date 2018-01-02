@@ -7,6 +7,9 @@ import nanodegree.izhang.bakingit.Widget.IngredientProvider;
 
 /**
  * Created by ivanzhang on 12/28/17.
+ *
+ * RecipeService
+ *  - Used to setup the listview associated with the Widget
  */
 
 public class RecipeService extends RemoteViewsService {

@@ -16,6 +16,11 @@ import nanodegree.izhang.bakingit.Model.Step;
 
 /**
  * Created by ivanzhang on 12/16/17.
+ *
+ * StepAdapter
+ *  - Adapter class for steps shown on the DetailActivity
+ *  - Requires implementation of the onItemClickListener interface
+ *
  */
 
 public class StepAdapter extends RealmRecyclerViewAdapter<Step, StepAdapter.StepViewHolder> {

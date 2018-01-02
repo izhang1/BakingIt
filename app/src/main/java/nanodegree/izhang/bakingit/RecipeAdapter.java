@@ -22,6 +22,10 @@ import nanodegree.izhang.bakingit.Widget.RecipeWidget;
 
 /**
  * Created by ivanzhang on 11/5/17.
+ *
+ *  RecipeAdapter
+ *  - Adapter class for ingredients shown on the HomeActivity
+ *  - Implements both onItemClick and onItemLongClick
  */
 
 public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapter.RecipeViewHolder> {

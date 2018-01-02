@@ -7,6 +7,9 @@ import io.realm.RealmObject;
 
 /**
  * Created by ivanzhang on 11/2/17.
+ *
+ * Model for recipes.
+ *
  */
 
 public class Recipe extends RealmObject {

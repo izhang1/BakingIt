@@ -11,6 +11,14 @@ import javax.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ *  Created by ivanzhang on 12/2/17.
+ *
+ *  DetailActivity
+ *  - Master view activity that shows the recipe information and links to the step activity and fragments
+ *  - If the smallest width of the device is more than 600dp the app will show as a master detail view
+ */
+
 public class DetailActivity extends AppCompatActivity implements RecipeFragment.OnFragmentInteractionListener, StepFragment.OnFragmentInteractionListener{
 
     @Nullable @BindView(R.id.tablet_layout) View tabletView;

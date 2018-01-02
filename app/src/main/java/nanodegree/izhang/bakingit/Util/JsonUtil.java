@@ -15,10 +15,10 @@ import nanodegree.izhang.bakingit.Model.Step;
 /**
  * Created by ivanzhang on 9/9/17.
  * utilities
- * - MovieJsonUtils class
- * - This class contains methods to parse JSON objects and pull out needed information for movies.
- * - This class contains methods to parse JSON objects and pull out needed information for trailers.
-
+ * - JsonUtils class
+ * - This class contains methods to parse JSON objects and pull out needed information for the recipe app.
+ * - Saves the data from the HTTP request to an internal Realm DB
+ *
  */
 
 public class JsonUtil {
