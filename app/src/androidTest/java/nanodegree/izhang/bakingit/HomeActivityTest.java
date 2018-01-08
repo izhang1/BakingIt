@@ -43,18 +43,11 @@ public class HomeActivityTest {
                                 0)));
         recyclerView.perform(actionOnItemAtPosition(0, click()));
 
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.tv_recipe_name), withText("Recipe Introduction"),
-                        childAtPosition(
-                                allOf(withId(R.id.recipe_card),
-                                        childAtPosition(
-                                                withId(R.id.rv_step_list),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        textView2.check(matches(withText("Recipe Introduction")));
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.tv_serving_size), withText("8 Servings"), isDisplayed()));
+        textView.check(matches(withText("8 Servings")));
 
-        ViewInteraction textView3 = onView(
+        ViewInteraction textView2= onView(
                 allOf(withId(R.id.tv_recipe_name), withText("4 OZ cream cheese(softened)"),
                         childAtPosition(
                                 childAtPosition(
@@ -62,7 +55,7 @@ public class HomeActivityTest {
                                         8),
                                 0),
                         isDisplayed()));
-        textView3.check(matches(withText("4 OZ cream cheese(softened)")));
+        textView2.check(matches(withText("4 OZ cream cheese(softened)")));
 
     }
 

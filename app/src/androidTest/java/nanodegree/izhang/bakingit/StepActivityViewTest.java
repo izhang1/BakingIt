@@ -44,10 +44,7 @@ public class StepActivityViewTest {
         recyclerView.perform(actionOnItemAtPosition(0, click()));
 
         ViewInteraction recyclerView2 = onView(
-                allOf(withId(R.id.rv_step_list),
-                        childAtPosition(
-                                withClassName(is("android.widget.RelativeLayout")),
-                                1)));
+                allOf(withId(R.id.rv_step_list)));
         recyclerView2.perform(actionOnItemAtPosition(1, click()));
 
         // Added a sleep statement to match the app's execution delay.
@@ -60,13 +57,7 @@ public class StepActivityViewTest {
         }
 
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.button_nextstep), withText("Next Step"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.fragment_step),
-                                        0),
-                                2),
-                        isDisplayed()));
+                allOf(withId(R.id.button_nextstep), withText("Next Step"), isDisplayed()));
         appCompatButton.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
@@ -79,25 +70,13 @@ public class StepActivityViewTest {
         }
 
         ViewInteraction button = onView(
-                allOf(withId(R.id.button_nextstep),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.fragment_step),
-                                        0),
-                                2),
-                        isDisplayed()));
+                allOf(withId(R.id.button_nextstep), isDisplayed()));
         button.check(matches(isDisplayed()));
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.tv_description), withText("2. Whisk the graham cracker crumbs, 50 grams (1/4 cup) of sugar, and 1/2 teaspoon of salt together in a medium bowl. Pour the melted butter and 1 teaspoon of vanilla into the dry ingredients and stir together until evenly mixed."),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.fragment_step),
-                                        0),
-                                1),
                         isDisplayed()));
         textView.check(matches(isDisplayed()));
-
 
     }
 
