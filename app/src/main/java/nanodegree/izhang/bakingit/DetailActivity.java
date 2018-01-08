@@ -23,8 +23,8 @@ import butterknife.ButterKnife;
 
 public class DetailActivity extends AppCompatActivity implements RecipeFragment.OnFragmentInteractionListener, StepFragment.OnFragmentInteractionListener{
 
-    @Nullable @BindView(R.id.tablet_layout) View tabletView;
     private long mRecipeId;
+    private boolean isTablet;
 
     private FragmentManager mFragMgr;
 
@@ -32,7 +32,6 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        ButterKnife.bind(this);
 
         // Gets the data passed in by the intent
         mRecipeId = getIntent().getLongExtra(getString(R.string.passed_recipe_id), -1);
@@ -45,8 +44,10 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
             return;
         }
 
-        // Checks if the table layout is there. Populates the view accordingly.
-        if(tabletView == null){
+        isTablet = getResources().getBoolean(R.bool.isTablet);
+
+        // Checks the value of isTable and sets the UI accordingly
+        if(!isTablet){
             mFragMgr = getSupportFragmentManager();
             RecipeFragment recipeFragment = RecipeFragment.newInstance(mRecipeId);
             mFragMgr.beginTransaction()
@@ -72,7 +73,7 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
     // Overrides the recipe adapter when a user clicks on a step
     @Override
     public void onStepItemClick(int stepId) {
-        if(tabletView != null){
+        if(isTablet){
             StepFragment stepFragment = StepFragment.newInstance(stepId, mRecipeId);
             if(mFragMgr == null) mFragMgr = getSupportFragmentManager();
             mFragMgr.beginTransaction()
