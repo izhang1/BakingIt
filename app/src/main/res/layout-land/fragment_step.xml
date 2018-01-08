@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     tools:context="nanodegree.izhang.bakingit.StepFragment">
 
+    <ImageView
+        android:id="@+id/thumbnail_view"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@id/thumbnail_view"
+        android:visibility="gone" />
+
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/exoplayer_video"
         android:layout_width="match_parent"

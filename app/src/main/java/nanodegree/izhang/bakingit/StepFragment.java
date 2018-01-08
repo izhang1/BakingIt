@@ -4,10 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -28,6 +31,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 
 import javax.annotation.Nullable;
@@ -56,6 +60,7 @@ public class StepFragment extends Fragment {
     private Step mStep;
     private Recipe mRecipe;
     private boolean hasNextStep = false;
+    private long savedVideoPosition = 0;
 
     // Used for Exoplayer
     private SimpleExoPlayerView mExoPlayer;
@@ -64,6 +69,7 @@ public class StepFragment extends Fragment {
     @BindView(R.id.tv_description) TextView tvDescription;
     @Nullable @BindView(R.id.button_nextstep) Button btnNext;
     @Nullable @BindView(R.id.button_next_land) Button btnNextLand;
+    @Nullable @BindView(R.id.thumbnail_view) ImageView thumbnailView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -87,6 +93,11 @@ public class StepFragment extends Fragment {
         if (getArguments() != null) {
             stepId = getArguments().getInt(ARG_PARAM1);
             recipeId = getArguments().getLong(ARG_PARAM2);
+        }
+
+        if (savedInstanceState != null) {
+            savedVideoPosition = savedInstanceState.getLong(getString(R.string.param_video_state));
+            Log.v("StepFragment", "On Create Position saved: " + savedVideoPosition);
         }
 
     }
@@ -123,7 +134,7 @@ public class StepFragment extends Fragment {
             }
 
             // Check if ExoPlayer is available and hide if not
-            if(mStep.getVideoUrl().isEmpty() || mStep.getVideoUrl() == null){
+            if( TextUtils.isEmpty(mStep.getVideoUrl()) || mStep.getVideoUrl() == null){
                 SimpleExoPlayerView exoPlayer = (SimpleExoPlayerView) view.findViewById(R.id.exoplayer_video);
                 exoPlayer.setVisibility(View.GONE);
             }else{
@@ -160,6 +171,9 @@ public class StepFragment extends Fragment {
     // Initializes the video components for media playback
     private void initializeVideo(View view){
 
+        // show the thumbnail
+        showThumbNail();
+
         // 1. Create a default TrackSelector
         TrackSelector selector = new DefaultTrackSelector();
 
@@ -185,6 +199,10 @@ public class StepFragment extends Fragment {
         MediaSource videoSource = new ExtractorMediaSource(mp4VideoUri, dataSourceFactory, extractorsFactory, null, null);
 
         mVidPlayer.prepare(videoSource);
+
+        mVidPlayer.seekTo(savedVideoPosition);
+        Log.v("StepFragment", "Video Player seek to: " + savedVideoPosition);
+
 
         mVidPlayer.addListener(new ExoPlayer.EventListener() {
             @Override
@@ -217,7 +235,24 @@ public class StepFragment extends Fragment {
 
         });
 
+        // Video is ready. Hide thumbnail
+        hideThumbNail();
+
         mVidPlayer.setPlayWhenReady(true);
+    }
+
+    private void showThumbNail(){
+        if(!TextUtils.isEmpty(mStep.getThumbnailUrl())){
+            Picasso.with(getContext())
+                    .load(mStep.getThumbnailUrl())
+                    .into(thumbnailView);
+        }
+    }
+
+    private void hideThumbNail(){
+        if(!TextUtils.isEmpty(mStep.getThumbnailUrl())){
+            thumbnailView.setVisibility(View.GONE);
+        }
     }
 
     private void onButtonPressed() {
@@ -257,7 +292,7 @@ public class StepFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(!mStep.getVideoUrl().isEmpty() || mStep.getVideoUrl() != null){
+        if(!TextUtils.isEmpty(mStep.getVideoUrl()) || mStep.getVideoUrl() != null){
             if(mVidPlayer == null) initializeVideo(getView());
         }
     }
@@ -266,8 +301,17 @@ public class StepFragment extends Fragment {
     public void onPause() {
         super.onPause();
         if(mVidPlayer != null) {
+            savedVideoPosition = mVidPlayer.getCurrentPosition();
             mVidPlayer.release();
             mVidPlayer = null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putLong(getString(R.string.param_video_state), savedVideoPosition);
+        Log.v("StepFragment", "Poisition saved: " + savedVideoPosition);
     }
 }

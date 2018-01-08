@@ -32,6 +32,8 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestCompile 'com.android.support.test:runner:1.0.1'
 
+    compile 'com.squareup.picasso:picasso:2.5.1'
+
     compile 'io.realm:android-adapters:2.1.1'
 
     compile 'com.google.android.exoplayer:exoplayer:r2.2.0'
