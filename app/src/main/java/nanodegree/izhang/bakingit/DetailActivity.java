@@ -2,8 +2,10 @@ package nanodegree.izhang.bakingit;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import javax.annotation.Nullable;
@@ -34,6 +36,9 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
 
         // Gets the data passed in by the intent
         mRecipeId = getIntent().getLongExtra(getString(R.string.passed_recipe_id), -1);
+
+        // Enable navigation back to the home activity
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Added this in so that fragments won't overlap when rotating from landscape to portrait mode
         if (savedInstanceState != null) {
@@ -94,4 +99,15 @@ public class DetailActivity extends AppCompatActivity implements RecipeFragment.
                 .commit();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Closes out the current activity. Navigates back up the stack to the parent activity.
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
