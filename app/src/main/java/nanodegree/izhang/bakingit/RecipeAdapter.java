@@ -5,13 +5,18 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +62,14 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
     public void onBindViewHolder(RecipeAdapter.RecipeViewHolder holder, int position) {
         Recipe recipe = mRecipeData.get(position);
         holder.textView.setText(recipe != null ? recipe.getName() : null);
+
+        // Show the recipe image if there's a valid image
+        if(!TextUtils.isEmpty(recipe.getImage())){
+            holder.imageRecipe.setVisibility(View.VISIBLE);
+            Picasso.with(context)
+                    .load(recipe.getImage())
+                    .into(holder.imageRecipe);
+        }
     }
 
     @Override
@@ -73,6 +86,7 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
 
         @BindView(R.id.recipe_card) CardView recipeCard;
         @BindView(R.id.tv_recipe_name) TextView textView;
+        @BindView(R.id.imageview_recipe) ImageView imageRecipe;
 
         public RecipeViewHolder(View itemView) {
             super(itemView);
@@ -109,8 +123,11 @@ public class RecipeAdapter extends RealmRecyclerViewAdapter<Recipe, RecipeAdapte
                     new ComponentName(context, RecipeWidget.class));
             widgetMgr.notifyAppWidgetViewDataChanged(widgetIds, R.id.list_ingredients);
 
-            // Toasts to notify user
-            Toast.makeText(context, "Widget changed to show recipe: " + recipe.getName(), Toast.LENGTH_SHORT).show();
+            // Snackbar showing completed change
+            Snackbar snackbar = Snackbar
+                    .make(v,  "Widget changed to show recipe: " + recipe.getName(), Snackbar.LENGTH_SHORT);
+
+            snackbar.show();
 
             return true;
         }

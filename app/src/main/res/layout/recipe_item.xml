@@ -10,6 +10,12 @@
     app:layout_constraintTop_toTopOf="parent"
     android:elevation="0dp">
 
+    <ImageView
+        android:id="@+id/imageview_recipe"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/tv_recipe_name"
         android:layout_width="wrap_content"
